@@ -1,0 +1,10 @@
+# บอก Netlify ว่า build จากโฟลเดอร์ไหน
+[build]
+  publish = "."                 # จุดหมายถึงโฟลเดอร์ root (มี index.html)
+  functions = "netlify/functions"  # ตำแหน่งโฟลเดอร์ Functions (telegram.js อยู่ในนี้)
+
+# ให้เรียก function ผ่าน path ที่ง่ายขึ้น
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

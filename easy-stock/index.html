@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเช็คสต๊อก Easy หมี่ไก่ฉีก</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'kanit': ['Kanit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen font-kanit">
+    <!-- Branch Selection Screen -->
+    <div id="branchScreen" class="min-h-screen flex flex-col">
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center">
+            <h1 class="text-2xl font-bold mb-2">🍜 Easy หมี่ไก่ฉีก</h1>
+            <p class="text-orange-100">ระบบเช็คสต๊อก</p>
+        </div>
+        
+        <div class="flex-1 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">เลือกสาขา</h2>
+            <div class="space-y-4">
+                <button onclick="selectBranch('อมตะ')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-2xl">🏢</span>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-semibold text-gray-800">สาขาอมตะ</h3>
+                                <p class="text-sm text-gray-500">Amata Branch</p>
+                            </div>
+                        </div>
+                        <span class="text-orange-500 text-xl">→</span>
+                    </div>
+                </button>
+                
+                <button onclick="selectBranch('พระยาสัจจา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-2xl">🏪</span>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-semibold text-gray-800">สาขาพระยาสัจจา</h3>
+                                <p class="text-sm text-gray-500">Prayasatcha Branch</p>
+                            </div>
+                        </div>
+                        <span class="text-orange-500 text-xl">→</span>
+                    </div>
+                </button>
+                
+                <button onclick="selectBranch('บางแสน')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                                <span class="text-2xl">🏖️</span>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-semibold text-gray-800">สาขาบางแสน</h3>
+                                <p class="text-sm text-gray-500">Bangsaen Branch</p>
+                            </div>
+                        </div>
+                        <span class="text-orange-500 text-xl">→</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mode Selection Screen -->
+    <div id="modeScreen" class="min-h-screen flex flex-col hidden">
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center">
+            <button onclick="goBack('branchScreen')" class="absolute left-4 top-6 text-white text-xl">←</button>
+            <h1 class="text-xl font-bold mb-1">สาขา<span id="selectedBranch"></span></h1>
+            <p class="text-orange-100">เลือกโหมดการทำงาน</p>
+        </div>
+        
+        <div class="flex-1 p-6">
+            <div class="space-y-6">
+                <button onclick="selectMode('open')" class="w-full bg-gradient-to-r from-green-400 to-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🔓</div>
+                        <h3 class="text-xl font-bold">เช็คสต็อคเปิดร้าน</h3>
+                    </div>
+                </button>
+                
+                <button onclick="selectMode('close')" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🌙</div>
+                        <h3 class="text-xl font-bold">เช็คสต็อคปิดร้าน</h3>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Check Screen -->
+    <div id="stockScreen" class="min-h-screen flex flex-col hidden">
+        <!-- Header with Progress -->
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
+            <button onclick="goBack('modeScreen')" class="text-white text-xl mb-2">←</button>
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <h1 class="text-lg font-bold">เช็คสต๊อก</h1>
+                    <p class="text-orange-100 text-sm"><span id="modeText"></span></p>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold" id="progressText">0%</div>
+                    <div class="text-xs text-orange-100">เสร็จแล้ว</div>
+                </div>
+            </div>
+            <div class="w-full bg-orange-300 rounded-full h-3">
+                <div id="progressBar" class="bg-white h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Stock Items -->
+        <div class="flex-1 p-4 pb-24" id="stockItems">
+            <!-- Items will be populated by JavaScript -->
+        </div>
+
+        <!-- Save Button -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
+            <button onclick="saveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+                💾 บันทึกการเช็คสต๊อกวันนี้
+            </button>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full">
+            <div class="text-center">
+                <div class="text-4xl mb-4">❓</div>
+                <h3 class="text-lg font-semibold mb-2">ต้องการสั่งรายการนี้เพิ่มใช่ไหม?</h3>
+                <p class="text-gray-600 text-sm mb-6" id="confirmItemName"></p>
+                <div class="flex space-x-3">
+                    <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium">ยกเลิก</button>
+                    <button onclick="confirmOrder()" class="flex-1 bg-orange-500 text-white py-3 rounded-lg font-medium">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Summary Screen -->
+    <div id="summaryScreen" class="min-h-screen flex flex-col hidden">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
+            <button onclick="goBack('stockScreen')" class="text-white text-xl mb-2">←</button>
+            <div class="text-center">
+                <h1 class="text-lg font-bold">สรุปรายการสั่งเพิ่ม</h1>
+                <p class="text-orange-100 text-sm">ตรวจสอบก่อนบันทึก</p>
+            </div>
+        </div>
+
+        <!-- Summary Content -->
+        <div class="flex-1 p-4 pb-24">
+            <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4">
+                <div class="flex items-center mb-3">
+                    <span class="text-2xl mr-2">📋</span>
+                    <h3 class="text-lg font-semibold text-gray-800">รายการที่สั่งเพิ่ม</h3>
+                </div>
+                <div id="orderSummaryList">
+                    <!-- Order summary will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Save Button -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
+            <button onclick="confirmSaveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+                ✅ ยืนยันและบันทึก
+            </button>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-xl p-6 max-w-sm w-full">
+            <div class="text-center">
+                <div class="text-4xl mb-4">✅</div>
+                <h3 class="text-lg font-semibold mb-2">บันทึกสำเร็จ!</h3>
+                <p class="text-gray-600 text-sm mb-6">ข้อมูลการเช็คสต๊อกได้รับการบันทึกแล้ว</p>
+                <button onclick="resetApp()" class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium">เริ่มใหม่</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentBranch = '';
+        let currentMode = '';
+        let stockData = {};
+        let orderRequests = {};
+        let currentConfirmItem = '';
+        let customOrders = [];
+
+        const openModeItems = [
+            { name: 'เส้นหมี่', unit: 'ห่อ', category: 'main' },
+            { name: 'อกไก่', unit: 'กรัม', category: 'main' },
+            { name: 'หมูกระจก', unit: 'ถุง', category: 'main' },
+            { name: 'ผักกาดหอม', unit: 'กรัม', category: 'main' },
+            { name: 'กล่อง 26 oz', unit: 'แถว', category: 'main' },
+            { name: 'กล่อง 32 oz', unit: 'แถว', category: 'main' },
+            { name: 'โค้ก', unit: 'ขวด', category: 'main' },
+            { name: 'สไปร์ท', unit: 'ขวด', category: 'main' },
+            { name: 'น้ำแดง', unit: 'ขวด', category: 'main' },
+            { name: 'น้ำส้ม', unit: 'ขวด', category: 'main' },
+            { name: 'เก๊กฮวย', unit: 'ขวด', category: 'main' },
+            { name: 'อัญชัน', unit: 'ขวด', category: 'main' },
+            { name: 'ชาไทย', unit: 'ขวด', category: 'main' },
+            { name: 'ชาเขียวมะลิ', unit: 'ขวด', category: 'main' }
+        ];
+
+        const closeModeItems = [
+            // หมวดวัตถุดิบสด
+            { name: 'เส้นหมี่', unit: 'ห่อ', category: 'fresh', icon: '🥬' },
+            { name: 'อกไก่', unit: 'กรัม', category: 'fresh', icon: '🥬' },
+            { name: 'หมูกระจก', unit: 'ถุง', category: 'fresh', icon: '🥬' },
+            { name: 'ผักกาดหอม', unit: 'กรัม', category: 'fresh', icon: '🥬' },
+            { name: 'ใบพาสเล่ย์', unit: 'ถุง', category: 'fresh', icon: '🥬' },
+            { name: 'ลูกชิ้นปลา', unit: '', category: 'fresh', icon: '🥬', orderOnly: true },
+            { name: 'ไข่กุ้ง', unit: '', category: 'fresh', icon: '🥬', orderOnly: true },
+            
+            // หมวดเครื่องปรุง
+            { name: 'น้ำมันกระเทียมเจียว', unit: 'แกลลอน', category: 'seasoning', icon: '🧂' },
+            { name: 'กระเทียมเจียว', unit: 'กรัม', category: 'seasoning', icon: '🧂' },
+            { name: 'ซอสดั้งเดิม', unit: 'แกลลอน', category: 'seasoning', icon: '🧂' },
+            { name: 'น้ำมะนาว', unit: 'ขวด', category: 'seasoning', icon: '🧂' },
+            { name: 'พริกป่น', unit: 'ถุง', category: 'seasoning', icon: '🧂' },
+            { name: 'น้ำตาล', unit: 'ถุง', category: 'seasoning', icon: '🧂' },
+            { name: 'น้ำปลา', unit: 'ขวด', category: 'seasoning', icon: '🧂' },
+            { name: 'รสดี', unit: 'ถุง', category: 'seasoning', icon: '🧂' },
+            
+            // หมวดบรรจุภัณฑ์ + น้ำดื่ม/น้ำอัดลม
+            { name: 'ถุงซีล 7×10', unit: 'ห่อ', category: 'packaging', icon: '📦' },
+            { name: 'ถุงซีล 9×11.5', unit: 'ห่อ', category: 'packaging', icon: '📦' },
+            { name: 'กล่อง 26 oz', unit: 'แถว', category: 'packaging', icon: '📦' },
+            { name: 'กล่อง 32 oz', unit: 'แถว', category: 'packaging', icon: '📦' },
+            { name: 'ถุงหิ้วพลาสติก 6×14', unit: 'ห่อ', category: 'packaging', icon: '📦' },
+            { name: 'ถุงหิ้วพลาสติก 8×16', unit: 'ห่อ', category: 'packaging', icon: '📦' },
+            { name: 'สติ๊กเกอร์ ดั้งเดิม', unit: 'แผ่น', category: 'packaging', icon: '📦' },
+            { name: 'สติ๊กเกอร์ แซ่บ', unit: 'แผ่น', category: 'packaging', icon: '📦' },
+            { name: 'น้ำเปล่า', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำโค้ก', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำส้ม', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำแดง', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำสไปร์ท', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำเก๊กฮวย', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'น้ำอัญชัน', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'ชาไทย', unit: 'ขวด', category: 'packaging', icon: '📦' },
+            { name: 'กระดาษใบเสร็จ', unit: 'ม้วน', category: 'packaging', icon: '📦' },
+            { name: 'ตะเกียบ', unit: '', category: 'packaging', icon: '📦', orderOnly: true },
+            
+            // หมวดอุปกรณ์ทำความสะอาด
+            { name: 'ถุงขยะ', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'ทิชชู่เปียก', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'ทิชชู่แห้ง', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'น้ำยาถูพื้น', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'น้ำยาซักผ้า', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'น้ำยาล้างจาน', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'ฟองน้ำล้างจาน', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'ถุงมือ', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true },
+            { name: 'หมวกคลุมผม', unit: '', category: 'cleaning', icon: '🧹', orderOnly: true }
+        ];
+
+        function selectBranch(branch) {
+            currentBranch = branch;
+            document.getElementById('selectedBranch').textContent = branch;
+            showScreen('modeScreen');
+        }
+
+        function selectMode(mode) {
+            currentMode = mode;
+            const modeText = mode === 'open' ? '🔓 โหมดเปิดร้าน' : '🌙 โหมดปิดร้าน';
+            document.getElementById('modeText').textContent = modeText;
+            loadStockItems();
+            showScreen('stockScreen');
+        }
+
+        function loadStockItems() {
+            const items = currentMode === 'open' ? openModeItems : closeModeItems;
+            const container = document.getElementById('stockItems');
+            container.innerHTML = '';
+            
+            stockData = {};
+            orderRequests = {};
+
+            if (currentMode === 'close') {
+                // Group items by category for close mode
+                const categories = {
+                    fresh: { name: 'หมวดวัตถุดิบสด', color: 'green', items: [] },
+                    seasoning: { name: 'หมวดเครื่องปรุง', color: 'yellow', items: [] },
+                    packaging: { name: 'หมวดบรรจุภัณฑ์ + น้ำดื่ม/น้ำอัดลม', color: 'blue', items: [] },
+                    cleaning: { name: 'หมวดอุปกรณ์ทำความสะอาด', color: 'purple', items: [] }
+                };
+
+                items.forEach(item => {
+                    categories[item.category].items.push(item);
+                });
+
+                Object.keys(categories).forEach(categoryKey => {
+                    const category = categories[categoryKey];
+                    if (category.items.length > 0) {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'mb-6';
+                        categoryDiv.innerHTML = `
+                            <div class="flex items-center mb-4">
+                                <span class="text-2xl mr-2">${category.items[0].icon}</span>
+                                <h3 class="text-lg font-semibold text-gray-800">${category.name}</h3>
+                            </div>
+                        `;
+                        
+                        category.items.forEach(item => {
+                            categoryDiv.appendChild(createItemElement(item));
+                        });
+                        
+                        container.appendChild(categoryDiv);
+                    }
+                });
+
+                // Add custom order section for close mode
+                const customOrderDiv = document.createElement('div');
+                customOrderDiv.className = 'mb-6';
+                customOrderDiv.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <span class="text-2xl mr-2">📝</span>
+                        <h3 class="text-lg font-semibold text-gray-800">สั่งอื่นๆเพิ่ม</h3>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <input type="text"
+                                       id="customItemName"
+                                       class="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                                       placeholder="ชื่อรายการ (เช่น น้ำแข็ง, ถ่านไฟ, กระดาษทิชชู่)"
+                                       onkeypress="if(event.key==='Enter') addCustomOrder()">
+                                <button onclick="addCustomOrder()"
+                                        class="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                                    เพิ่ม
+                                </button>
+                            </div>
+                            <div id="customOrdersList" class="space-y-2"></div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(customOrderDiv);
+            } else {
+                // Simple list for open mode
+                items.forEach(item => {
+                    container.appendChild(createItemElement(item));
+                });
+            }
+
+            updateProgress();
+        }
+
+        function createItemElement(item) {
+            const div = document.createElement('div');
+            div.className = 'bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100';
+            
+            if (item.orderOnly) {
+                // Order-only items (cleaning supplies, chopsticks)
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-gray-800">${item.name}</h4>
+                            <p class="text-sm text-gray-500">ติ๊กเพื่อสั่งเพิ่ม</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="w-5 h-5 text-orange-500 rounded" onchange="toggleOrderRequest('${item.name}', this.checked, this)">
+                                <span class="ml-2 text-sm text-gray-600">สั่งเพิ่ม</span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const isGallonItem = item.unit === 'แกลลอน';
+                const isNoodleItem = item.name === 'เส้นหมี่';
+                
+                if (isGallonItem) {
+                    // Gallon items with whole number + fraction
+                    div.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800">${item.name}</h4>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-2">
+                                    <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                                            onchange="updateGallonStock('${item.name}')">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                    <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                                            onchange="updateGallonStock('${item.name}')">
+                                        <option value="">-</option>
+                                        <option value="1/4">1/4</option>
+                                        <option value="1/2">1/2</option>
+                                        <option value="3/4">3/4</option>
+                                    </select>
+                                    <span class="text-sm text-gray-600">${item.unit}</span>
+                                </div>
+                                ${currentMode === 'close' ? `
+                                    <button onclick="requestOrder('${item.name}')"
+                                            class="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
+                                        สั่งเพิ่ม
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                } else if (isNoodleItem || item.name === 'ซอสดั้งเดิม' || item.name === 'น้ำมันกระเทียมเจียว') {
+                    // Noodle & sauce items with whole number + fraction (0-5)
+                    div.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800">${item.name}</h4>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-2">
+                                    <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                                            onchange="updateNoodleStock('${item.name}')">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                                            onchange="updateNoodleStock('${item.name}')">
+                                        <option value="">-</option>
+                                        <option value="1/4">1/4</option>
+                                        <option value="1/2">1/2</option>
+                                        <option value="3/4">3/4</option>
+                                    </select>
+                                    <span class="text-sm text-gray-600">${item.unit}</span>
+                                </div>
+                                ${currentMode === 'close' ? `
+                                    <button onclick="requestOrder('${item.name}')"
+                                            class="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
+                                        สั่งเพิ่ม
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Regular items with number input
+                    div.innerHTML = `
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-800">${item.name}</h4>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="flex items-center space-x-2">
+                                    <input type="number"
+                                           class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                                           placeholder="0"
+                                           min="0"
+                                           onchange="updateStock('${item.name}', this.value)">
+                                    <span class="text-sm text-gray-600">${item.unit}</span>
+                                </div>
+                                ${currentMode === 'close' ? `
+                                    <button onclick="requestOrder('${item.name}')"
+                                            class="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">
+                                        สั่งเพิ่ม
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            return div;
+        }
+
+        function updateStock(itemName, value) {
+            stockData[itemName] = value || '';
+            updateProgress();
+        }
+
+        function updateNoodleStock(itemName) {
+            const selects = document.querySelectorAll(`select[onchange*="${itemName}"]`);
+            if (selects.length === 2) {
+                const wholeNumber = selects[0].value;
+                const fraction = selects[1].value;
+                
+                let combinedValue = wholeNumber;
+                if (fraction && wholeNumber !== '0') {
+                    combinedValue = wholeNumber + ' ' + fraction;
+                } else if (fraction && wholeNumber === '0') {
+                    combinedValue = fraction;
+                }
+                
+                stockData[itemName] = combinedValue || '';
+                updateProgress();
+            }
+        }
+
+        function updateGallonStock(itemName) {
+            const selects = document.querySelectorAll(`select[onchange*="${itemName}"]`);
+            if (selects.length === 2) {
+                const wholeNumber = selects[0].value;
+                const fraction = selects[1].value;
+                
+                let combinedValue = wholeNumber;
+                if (fraction && wholeNumber !== '0') {
+                    combinedValue = wholeNumber + ' ' + fraction;
+                } else if (fraction && wholeNumber === '0') {
+                    combinedValue = fraction;
+                }
+                
+                stockData[itemName] = combinedValue || '';
+                updateProgress();
+            }
+        }
+
+        function toggleOrderRequest(itemName, checked, checkbox) {
+            if (checked) {
+                currentConfirmItem = itemName;
+                document.getElementById('confirmItemName').textContent = itemName;
+                document.getElementById('confirmModal').classList.remove('hidden');
+                window.currentCheckbox = checkbox;
+            } else {
+                delete orderRequests[itemName];
+                updateProgress();
+            }
+        }
+
+        function requestOrder(itemName) {
+            currentConfirmItem = itemName;
+            document.getElementById('confirmItemName').textContent = itemName;
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+
+        function confirmOrder() {
+            orderRequests[currentConfirmItem] = true;
+            closeModal();
+            updateProgress();
+        }
+
+        function closeModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+            if (window.currentCheckbox && !orderRequests[currentConfirmItem]) {
+                window.currentCheckbox.checked = false;
+            }
+            currentConfirmItem = '';
+            window.currentCheckbox = null;
+        }
+
+        function updateProgress() {
+            const items = currentMode === 'open' ? openModeItems : closeModeItems;
+            let completed = 0;
+            
+            items.forEach(item => {
+                if (item.orderOnly) {
+                    completed++;
+                } else {
+                    if (stockData[item.name] && stockData[item.name] !== '') {
+                        completed++;
+                    }
+                }
+            });
+            
+            const percentage = Math.round((completed / items.length) * 100);
+            document.getElementById('progressText').textContent = percentage + '%';
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function saveStock() {
+            if (currentMode === 'open') {
+                confirmSaveStock();
+            } else {
+                showOrderSummary();
+                showScreen('summaryScreen');
+            }
+        }
+
+        function showOrderSummary() {
+            const container = document.getElementById('orderSummaryList');
+            container.innerHTML = '';
+
+            const allOrders = [];
+            Object.keys(orderRequests).forEach(itemName => {
+                if (orderRequests[itemName]) {
+                    allOrders.push(itemName);
+                }
+            });
+
+            if (allOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">📝</div>
+                        <p>ไม่มีรายการสั่งเพิ่ม</p>
+                    </div>
+                `;
+            } else {
+                allOrders.forEach((itemName, index) => {
+                    const orderDiv = document.createElement('div');
+                    orderDiv.className = 'flex items-center justify-between p-3 border-b border-gray-100 last:border-b-0';
+                    orderDiv.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-sm font-medium mr-3">
+                                ${index + 1}
+                            </span>
+                            <span class="font-medium text-gray-800">${itemName}</span>
+                        </div>
+                        <span class="text-green-600 font-medium">✓ สั่งเพิ่ม</span>
+                    `;
+                    container.appendChild(orderDiv);
+                });
+            }
+        }
+
+        async function confirmSaveStock() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('th-TH');
+            const timeStr = now.toLocaleTimeString('th-TH');
+            
+            const progressPercent = parseInt(document.getElementById('progressText').textContent) || 0;
+            const payload = {
+                branch: currentBranch,
+                mode: currentMode,
+                date: dateStr,
+                time: timeStr,
+                progress: progressPercent,
+                orders: Object.keys(orderRequests).filter(k => orderRequests[k] === true),
+            };
+
+            // 🔔 ส่งแจ้งเตือนไป Netlify Function → Telegram
+            try {
+                await fetch('/.netlify/functions/telegram', {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {
+                console.error('Telegram error:', e);
+            }
+            
+            const report = {
+                ...payload,
+                stockData: stockData,
+                customOrders: customOrders
+            };
+            console.log('Stock Report:', report);
+            
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function addCustomOrder() {
+            const nameInput = document.getElementById('customItemName');
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert('กรุณากรอกชื่อรายการ');
+                return;
+            }
+            if (customOrders.some(order => order.name === name)) {
+                alert('รายการนี้มีอยู่แล้ว');
+                return;
+            }
+            const customOrder = { id: Date.now(), name };
+            customOrders.push(customOrder);
+            orderRequests[name] = true;
+            nameInput.value = '';
+            updateCustomOrdersList();
+        }
+
+        function updateCustomOrdersList() {
+            const container = document.getElementById('customOrdersList');
+            if (!container) return;
+            container.innerHTML = '';
+            customOrders.forEach(order => {
+                const orderDiv = document.createElement('div');
+                orderDiv.className = 'flex items-center justify-between bg-green-50 p-3 rounded-lg border border-green-200';
+                orderDiv.innerHTML = `
+                    <div class="flex-1">
+                        <span class="font-medium text-green-800">${order.name}</span>
+                    </div>
+                    <button onclick="removeCustomOrder(${order.id})"
+                            class="text-red-500 hover:text-red-700 text-sm font-medium">
+                        ลบ
+                    </button>
+                `;
+                container.appendChild(orderDiv);
+            });
+        }
+
+        function removeCustomOrder(orderId) {
+            const orderIndex = customOrders.findIndex(order => order.id === orderId);
+            if (orderIndex !== -1) {
+                const orderName = customOrders[orderIndex].name;
+                delete orderRequests[orderName];
+                customOrders.splice(orderIndex, 1);
+                updateCustomOrdersList();
+            }
+        }
+
+        function resetApp() {
+            currentBranch = '';
+            currentMode = '';
+            stockData = {};
+            orderRequests = {};
+            customOrders = [];
+            document.getElementById('successModal').classList.add('hidden');
+            showScreen('branchScreen');
+        }
+
+        function showScreen(screenId) {
+            const screens = ['branchScreen', 'modeScreen', 'stockScreen', 'summaryScreen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function goBack(screenId) {
+            showScreen(screenId);
+        }
+
+        // Initialize app
+        showScreen('branchScreen');
+    </script>
+</body>
+</html>
