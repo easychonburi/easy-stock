@@ -189,33 +189,20 @@
     /* ---------------- Config helpers ---------------- */
     const FRACTIONS = ['', '1/4', '1/2', '3/4']; // ช่องเศษ
     const WHOLE_MAX = 6; // สูงสุด 0–6
-<!-- ... ด้านบนมี const FRACTIONS และ const WHOLE_MAX อยู่แล้ว ... -->
 
-<script>
-  /* ---------------- Config helpers ---------------- */
-  const FRACTIONS = ['', '1/4', '1/2', '3/4'];
-  const WHOLE_MAX = 6;
-
-  /* ⬇️ วางฟังก์ชันนี้ต่อจาก WHOLE_MAX */
-  function numericOnly(inp, allowDecimal = true) {
-    let v = String(inp.value || '');
-    // ตัดทุกอย่างที่ไม่ใช่ตัวเลขหรือจุดทศนิยม
-    v = v.replace(/[^\d.]/g, '');
-    // อนุญาตจุดทศนิยมได้แค่ 1 จุด
-    if (allowDecimal) {
-      const parts = v.split('.');
-      if (parts.length > 2) {
-        v = parts[0] + '.' + parts.slice(1).join('');
+    /* กรองให้ช่อง free เป็นเลขเท่านั้น (อนุญาตทศนิยม) */
+    function numericOnly(inp, allowDecimal = true) {
+      let v = String(inp.value || '');
+      v = v.replace(/[^\d.]/g, '');
+      if (allowDecimal) {
+        const parts = v.split('.');
+        if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+      } else {
+        v = v.replace(/\./g, '');
       }
-    } else {
-      v = v.replace(/\./g, '');
+      if (v.startsWith('.')) v = '0' + v;
+      inp.value = v;
     }
-    // ถ้าขึ้นต้นด้วยจุด ให้เติม 0 นำหน้า (เช่น ".5" -> "0.5")
-    if (v.startsWith('.')) v = '0' + v;
-
-    inp.value = v;
-  }
-</script>
 
     // ใช้ hash id จากชื่อ (รองรับไทย/อีโมจิ)
     function hashId(name) {
@@ -254,23 +241,23 @@
     /* ---------------- Item lists ---------------- */
     // โหมดเปิดร้าน (ไม่มีปุ่มสั่งเพิ่ม)
     const openModeItemsBase = [
-  { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
-  { name: 'อกไก่', unit: 'กิโล', type:'free' },
-  { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
-  { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },
-  { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
-  { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
+      { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
+      { name: 'อกไก่', unit: 'กิโล', type:'free' },
+      { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
+      { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },
+      { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
+      { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
 
-  // เปลี่ยนเครื่องดื่มเป็น free ทั้งหมด
-  { name: 'โค้ก',        unit: 'ขวด', type:'free' },
-  { name: 'สไปร์ท',      unit: 'ขวด', type:'free' },
-  { name: 'น้ำแดง',      unit: 'ขวด', type:'free' },
-  { name: 'น้ำส้ม',      unit: 'ขวด', type:'free' },
-  { name: 'เก๊กฮวย',     unit: 'ขวด', type:'free' },
-  { name: 'อัญชัน',      unit: 'ขวด', type:'free' },
-  { name: 'ชาไทย',       unit: 'ขวด', type:'free' },
-  { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'free' },
-];
+      // เครื่องดื่มเป็น free ทั้งหมด
+      { name: 'โค้ก',        unit: 'ขวด', type:'free' },
+      { name: 'สไปร์ท',      unit: 'ขวด', type:'free' },
+      { name: 'น้ำแดง',      unit: 'ขวด', type:'free' },
+      { name: 'น้ำส้ม',      unit: 'ขวด', type:'free' },
+      { name: 'เก๊กฮวย',     unit: 'ขวด', type:'free' },
+      { name: 'อัญชัน',      unit: 'ขวด', type:'free' },
+      { name: 'ชาไทย',       unit: 'ขวด', type:'free' },
+      { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'free' },
+    ];
 
     // โหมดปิดร้าน (แยกหมวด + ปุ่มสั่งเพิ่ม)
     function closeModeItemsForBranch(branch){
@@ -313,14 +300,14 @@
         { name:'ถุงหิ้วพลาสติก 8×16', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
         { name:'สติ๊กเกอร์ ดั้งเดิม', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
         { name:'สติ๊กเกอร์ แซ่บ', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
-     { name:'น้ำเปล่า',   unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำโค้ก',    unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำส้ม',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำแดง',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำสไปร์ท',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'น้ำอัญชัน',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-{ name:'ชาไทย',      unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำเปล่า',   unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำโค้ก',    unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำส้ม',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำแดง',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำสไปร์ท',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำอัญชัน',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'ชาไทย',      unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
         ...packagingReceipts,
         { name:'ตะเกียบ', unit:'', category:'packaging', icon:'📦', orderOnly:true },
 
@@ -485,32 +472,32 @@
         `;
         return div;
       }
-      
-// type: free → กรอกเลขได้อิสระ (ทศนิยมได้) แต่ให้เป็น "เลขเท่านั้น"
-if (item.type === 'free') {
-  div.innerHTML = `
-    <div class="flex items-center justify-between">
-      <div class="flex-1">
-        <h4 class="font-medium text-gray-800">${item.name}</h4>
-      </div>
-      <div class="flex items-center space-x-3">
-        <div class="flex items-center space-x-2">
-          <input
-            type="text"
-            inputmode="decimal"
-            placeholder="0"
-            class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
-            oninput="numericOnly(this, true); updateStock('${item.name}', this.value)"
-            onchange="numericOnly(this, true); updateStock('${item.name}', this.value)"
-          >
-          <span class="text-sm text-gray-600">${item.unit}</span>
-        </div>
-        ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
-      </div>
-    </div>
-  `;
-  return div;
-}
+
+      // type: free → กรอกเลขได้อิสระ (ทศนิยมได้) แต่ให้เป็น "เลขเท่านั้น"
+      if (item.type === 'free') {
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-800">${item.name}</h4>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-2">
+                <input
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="0"
+                  class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                  oninput="numericOnly(this, true); updateStock('${item.name}', this.value)"
+                  onchange="numericOnly(this, true); updateStock('${item.name}', this.value)"
+                >
+                <span class="text-sm text-gray-600">${item.unit}</span>
+              </div>
+              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
+            </div>
+          </div>
+        `;
+        return div;
+      }
 
       return div;
     }
@@ -574,38 +561,38 @@ if (item.type === 'free') {
     }
 
     function confirmOrder(){
-  // เก็บชื่อรายการไว้ก่อน เพราะ closeModal() จะเคลียร์ค่า
-  const item = currentConfirmItem;
+      // เก็บชื่อรายการไว้ก่อน เพราะ closeModal() จะเคลียร์ค่า
+      const item = currentConfirmItem;
 
-  if (window.currentAction === 'remove') {
-    delete orderRequests[item];
-  } else {
-    orderRequests[item] = true;
-  }
+      if (window.currentAction === 'remove') {
+        delete orderRequests[item];
+      } else {
+        orderRequests[item] = true;
+      }
 
-  // อัปเดตปุ่มให้เป็นเขียว/ส้ม ก่อนปิดโมดัล
-  refreshOrderButtonState(item);
-  updateProgress();
+      // อัปเดตปุ่มให้เป็นเขียว/ส้ม ก่อนปิดโมดัล
+      refreshOrderButtonState(item);
+      updateProgress();
 
-  // ค่อยปิดโมดัลทีหลัง
-  closeModal();
-}
-    
+      // ค่อยปิดโมดัลทีหลัง
+      closeModal();
+    }
+
     function closeModal(){
-  const item = currentConfirmItem; // เก็บชื่อไว้ก่อน
+      const item = currentConfirmItem; // เก็บชื่อไว้ก่อน
 
-  document.getElementById('confirmModal').classList.add('hidden');
+      document.getElementById('confirmModal').classList.add('hidden');
 
-  // ถ้าเป็นกรณีติ๊ก checkbox แล้วกดยกเลิก ให้ติ๊กกลับ
-  if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[item]) {
-    window.currentCheckbox.checked = false;
-  }
+      // ถ้าเป็นกรณีติ๊ก checkbox แล้วกดยกเลิก ให้ติ๊กกลับ
+      if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[item]) {
+        window.currentCheckbox.checked = false;
+      }
 
-  // เคลียร์สถานะ
-  window.currentCheckbox = null;
-  currentConfirmItem = '';
-  window.currentAction = null;
-}
+      // เคลียร์สถานะ
+      window.currentCheckbox = null;
+      currentConfirmItem = '';
+      window.currentAction = null;
+    }
 
     /* ---------------- Progress ---------------- */
     function updateProgress(){
@@ -752,7 +739,3 @@ if (item.type === 'free') {
   </script>
 </body>
 </html>
-
-
-
-
