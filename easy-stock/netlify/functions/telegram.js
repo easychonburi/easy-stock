@@ -1,136 +1,86 @@
 // netlify/functions/telegram.js
-exports.handler = async function (event) {
-  // Health check (ไม่ยิงข้อความจริงตอน GET)
-  if (event.httpMethod === 'GET') {
-    return { statusCode: 200, body: JSON.stringify({ ok: true, ping: 'telegram function is alive' }) };
+// ส่งข้อความเข้า Telegram แบบแยกห้องตามที่ตั้งค่าไว้
+// *** ข้อความทุกแบบไม่มีบรรทัด "ความคืบหน้า:" แล้ว ***
+
+export async function handler(event) {
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  const token = process.env.TELEGRAM_TOKEN;
+  if (!token) {
+    return { statusCode: 500, body: 'Missing TELEGRAM_TOKEN' };
+  }
+
+  const {
+    branch = '-',
+    mode = 'open', // 'open' | 'close'
+    date = '',
+    time = '',
+    stocks = [],  // [{name, value, unit}]
+    orders = [],  // [string]
+  } = JSON.parse(event.body || '{}');
+
+  const CHAT_OPEN   = process.env.TELEGRAM_CHAT_ID_OPEN   || process.env.TELEGRAM_CHAT_ID;
+  const CHAT_ORDERS = process.env.TELEGRAM_CHAT_ID_ORDERS || process.env.TELEGRAM_CHAT_ID;
+  const CHAT_STOCKS = process.env.TELEGRAM_CHAT_ID_STOCKS || process.env.TELEGRAM_CHAT_ID;
+
+  const api = (method) => `https://api.telegram.org/bot${token}/${method}`;
+
+  const escape = (s='') =>
+    String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+  const headerLine = (title) =>
+    `📦 ${title}\nสาขา: ${escape(branch)}\nเวลา: ${escape(time || date)}`;
+
+  const formatStocks = () => {
+    const head = headerLine(mode === 'open' ? 'เช็คสต๊อก (เปิดร้าน)' : 'เช็คสต๊อก (ปิดร้าน)');
+    if (!stocks || stocks.length === 0) {
+      return `${head}\n\n— ไม่มีรายการกรอกจำนวน —`;
+    }
+    const lines = stocks.map(
+      (x) => `• ${escape(x.name)}: ${escape(x.value)} ${escape(x.unit || '')}`.trim()
+    );
+    return `${head}\n\n${lines.join('\n')}`;
+  };
+
+  const formatOrders = () => {
+    const head = headerLine('สรุปรายการสั่งเพิ่ม');
+    if (!orders || orders.length === 0) {
+      return `${head}\n\n— ไม่มีรายการสั่งเพิ่ม —`;
+    }
+    const lines = orders.map((n) => `• ${escape(n)}`);
+    return `${head}\n\n${lines.join('\n')}`;
+  };
+
+  async function send(chatId, text) {
+    if (!chatId) return;
+    await fetch(api('sendMessage'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true,
+      }),
+    });
   }
 
   try {
-    const TELEGRAM_TOKEN     = process.env.TELEGRAM_TOKEN;
-
-    // Fallback (เผื่อยังไม่ได้ตั้งครบ 3 ห้อง)
-    const CHAT_ID_FALLBACK   = process.env.TELEGRAM_CHAT_ID || null;
-
-    // 3 ห้องตามต้องการ
-    const CHAT_ID_OPEN       = process.env.TELEGRAM_CHAT_ID_OPEN   || null; // ห้องเช็คสต๊อก "เปิดร้าน"
-    const CHAT_ID_ORDERS     = process.env.TELEGRAM_CHAT_ID_ORDERS || null; // ห้องแจ้ง "สั่งเพิ่ม"
-    const CHAT_ID_STOCKS     = process.env.TELEGRAM_CHAT_ID_STOCKS || null; // ห้อง "รายการคงเหลือ"
-
-    if (!TELEGRAM_TOKEN) {
-      return { statusCode: 500, body: JSON.stringify({ ok:false, error:'Missing env: TELEGRAM_TOKEN' }) };
+    if (mode === 'open') {
+      // เปิดร้าน: ส่งเฉพาะ "เช็คสต๊อก (เปิดร้าน)"
+      await send(CHAT_OPEN, formatStocks());
+    } else {
+      // ปิดร้าน: แยกสองข้อความ
+      await send(CHAT_STOCKS, formatStocks()); // รายการคงเหลือ
+      await send(CHAT_ORDERS, formatOrders()); // รายการสั่งเพิ่ม
     }
-
-    const payload = JSON.parse(event.body || "{}");
-    const isOpen = payload.mode === 'open';
-
-    // เตรียมข้อความ
-    const msgStocks = buildStocksMessage(payload); // 📊 รายการคงเหลือที่กรอก
-    const msgOrders = buildOrdersMessage(payload); // 🧾 สรุปรายการสั่งเพิ่ม
-
-    // เลือกห้องสำหรับ "รายการคงเหลือ"
-    const stocksChatId = isOpen
-      ? (CHAT_ID_OPEN || CHAT_ID_STOCKS || CHAT_ID_FALLBACK)
-      : (CHAT_ID_STOCKS || CHAT_ID_OPEN || CHAT_ID_FALLBACK);
-
-    if (!stocksChatId) {
-      throw new Error('No chat id for stocks message. Please set TELEGRAM_CHAT_ID_OPEN or TELEGRAM_CHAT_ID_STOCKS (or TELEGRAM_CHAT_ID fallback).');
-    }
-
-    // ส่ง "รายการคงเหลือ" เสมอ (โหมดเปิด/ปิด)
-    for (const part of chunkText(msgStocks, 3500)) {
-      await tgSend(TELEGRAM_TOKEN, stocksChatId, part);
-    }
-
-    // โหมด "ปิดร้าน" เท่านั้น ส่ง "สั่งเพิ่ม" ไปห้องสั่งเพิ่ม
-    if (!isOpen) {
-      const ordersChatId = (CHAT_ID_ORDERS || CHAT_ID_FALLBACK);
-      if (!ordersChatId) {
-        // ถ้าไม่ได้ตั้งห้องสั่งเพิ่มไว้ ก็ข้าม (ไม่ error เพื่อให้เปิดใช้งานได้)
-        console.warn('No chat id for orders message. Set TELEGRAM_CHAT_ID_ORDERS or TELEGRAM_CHAT_ID to receive orders.');
-      } else {
-        for (const part of chunkText(msgOrders, 3500)) {
-          await tgSend(TELEGRAM_TOKEN, ordersChatId, part);
-        }
-      }
-    }
-
     return { statusCode: 200, body: JSON.stringify({ ok: true }) };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ ok:false, error: e.message }) };
+    return { statusCode: 500, body: `Telegram error: ${e.message}` };
   }
-};
-
-/* -------------------------- Helpers -------------------------- */
-
-function headerLines(p, titleEmoji, titleText){
-  const modeLabel = p.mode === 'open' ? 'เปิดร้าน' : 'ปิดร้าน';
-  return [
-    `${titleEmoji} <b>${titleText}</b>`,
-    `สาขา: <b>${safe(p.branch)}</b>`,
-    `โหมด: <b>${modeLabel}</b>`,
-    `เวลา: ${safe(p.date)} ${safe(p.time)}`,
-    `ความคืบหน้า: <b>${Number(p.progress||0)}%</b>`
-  ];
-}
-
-function buildStocksMessage(p){
-  // ถ้าอยากให้หัวข้อห้อง "เปิดร้าน" ชัดๆ กว่านี้ สามารถแยกได้ เช่น:
-  // const title = (p.mode === 'open') ? 'เช็คสต๊อก (เปิดร้าน)' : 'รายการคงเหลือที่กรอก';
-  const title = (p.mode === 'open') ? 'เช็คสต๊อก (เปิดร้าน)' : 'รายการคงเหลือที่กรอก';
-  const header = headerLines(p, '📊', title);
-  const stocks = Array.isArray(p.stocks) ? p.stocks : [];
-
-  const body = (stocks.length > 0)
-    ? stocks.map(s => `• ${safe(s.name)}: <b>${safe(s.value)}</b> ${safe(s.unit)}`)
-    : ['• ไม่มีการกรอกจำนวนคงเหลือ'];
-
-  return [...header, '', ...body].join('\n');
-}
-
-function buildOrdersMessage(p){
-  const header = headerLines(p, '🧾', 'สรุปรายการสั่งเพิ่ม');
-  const orders = Array.isArray(p.orders) ? p.orders : [];
-
-  const body = (orders.length > 0)
-    ? orders.map(o => `• ${safe(o)}`)
-    : ['• ไม่มีรายการสั่งเพิ่ม'];
-
-  return [...header, '', ...body].join('\n');
-}
-
-async function tgSend(token, chatId, text){
-  const resp = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text,
-      parse_mode: 'HTML',
-      disable_web_page_preview: true
-    })
-  });
-  const data = await resp.json();
-  if (!data.ok) throw new Error(data.description || 'Telegram error');
-}
-
-function chunkText(text, maxLen = 3500){
-  const lines = text.split('\n');
-  const parts = [];
-  let buf = '';
-  for (const line of lines){
-    const next = buf ? (buf + '\n' + line) : line;
-    if (next.length > maxLen){
-      if (buf) parts.push(buf);
-      buf = line;
-    } else {
-      buf = next;
-    }
-  }
-  if (buf) parts.push(buf);
-  return parts;
-}
-
-function safe(v){
-  if (v == null) return '';
-  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
