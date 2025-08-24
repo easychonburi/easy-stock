@@ -190,11 +190,17 @@
     const FRACTIONS = ['', '1/4', '1/2', '3/4']; // ช่องเศษ
     const WHOLE_MAX = 6; // สูงสุด 0–6
 
-    // ช่วยสร้าง id ปุ่มตามชื่อรายการ
-    function slugify(s) {
-      return String(s).normalize('NFKD').replace(/[^\w\s-]/g,'').trim().replace(/\s+/g,'-');
+    // ใช้ hash id จากชื่อ (รองรับไทย/อีโมจิ)
+    function hashId(name) {
+      // FNV-1a 32-bit
+      let hash = 0x811c9dc5;
+      for (const ch of String(name)) {
+        hash ^= ch.codePointAt(0);
+        hash = (hash >>> 0) * 16777619 >>> 0;
+      }
+      return 'orderBtn-' + hash.toString(16);
     }
-    function btnIdForItem(name){ return 'orderBtn-' + slugify(name); }
+    function btnIdForItem(name){ return hashId(name); }
 
     // HTML ปุ่มสั่งเพิ่ม (สีส้ม/เขียวตามสถานะ)
     function getOrderBtnHTML(name){
@@ -460,7 +466,7 @@
       else if (v > WHOLE_MAX) inp.value = WHOLE_MAX;
     }
 
-    // fraction updater: มองหา selects คู่นี้เฉพาะ element เดียว โดยดูผ่าน parentNode
+    // fraction updater: ใช้ selects ภายในบล็อกเดียวกัน
     function updateFractionStock(itemName, el){
       const parent = el.parentNode;
       const selects = parent.querySelectorAll('select');
