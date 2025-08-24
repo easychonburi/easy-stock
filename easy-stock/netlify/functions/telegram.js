@@ -34,7 +34,7 @@ export async function handler(event) {
       .replace(/>/g, '&gt;');
 
   const headerLine = (title) =>
-    `📦 ${title}\nสาขา: ${escape(branch)}\nเวลา: ${escape(time || date)}`;
+  `📦 ${title}\nสาขา: ${escape(branch)}\nวันที่: ${escape(date)}\nเวลา: ${escape(time)}`;
 
   const formatStocks = () => {
     const head = headerLine(mode === 'open' ? 'เช็คสต๊อก (เปิดร้าน)' : 'เช็คสต๊อก (ปิดร้าน)');
@@ -84,3 +84,4 @@ export async function handler(event) {
     return { statusCode: 500, body: `Telegram error: ${e.message}` };
   }
 }
+
