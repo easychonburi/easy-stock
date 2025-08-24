@@ -227,21 +227,21 @@
     /* ---------------- Item lists ---------------- */
     // โหมดเปิดร้าน (ไม่มีปุ่มสั่งเพิ่ม)
     const openModeItemsBase = [
-      { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
-      { name: 'อกไก่', unit: 'กิโล', type:'number' },
-      { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
-      { name: 'ผักกาดหอม', unit: 'กิโล', type:'number' },
-      { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
-      { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
-      { name: 'โค้ก', unit: 'ขวด', type:'number' },
-      { name: 'สไปร์ท', unit: 'ขวด', type:'number' },
-      { name: 'น้ำแดง', unit: 'ขวด', type:'number' },
-      { name: 'น้ำส้ม', unit: 'ขวด', type:'number' },
-      { name: 'เก๊กฮวย', unit: 'ขวด', type:'number' },
-      { name: 'อัญชัน', unit: 'ขวด', type:'number' },
-      { name: 'ชาไทย', unit: 'ขวด', type:'number' },
-      { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'number' },
-    ];
+  { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
+  { name: 'อกไก่', unit: 'กิโล', type:'free' },        // ← free
+  { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
+  { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },   // ← free
+  { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
+  { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
+  { name: 'โค้ก', unit: 'ขวด', type:'number' },
+  { name: 'สไปร์ท', unit: 'ขวด', type:'number' },
+  { name: 'น้ำแดง', unit: 'ขวด', type:'number' },
+  { name: 'น้ำส้ม', unit: 'ขวด', type:'number' },
+  { name: 'เก๊กฮวย', unit: 'ขวด', type:'number' },
+  { name: 'อัญชัน', unit: 'ขวด', type:'number' },
+  { name: 'ชาไทย', unit: 'ขวด', type:'number' },
+  { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'number' },
+];
 
     // โหมดปิดร้าน (แยกหมวด + ปุ่มสั่งเพิ่ม)
     function closeModeItemsForBranch(branch){
@@ -258,16 +258,16 @@
       return [
         // fresh
         { name:'เส้นหมี่', unit:'ห่อ', category:'fresh', icon:'🥬', type:'fraction' },
-        { name:'อกไก่', unit:'กิโล', category:'fresh', icon:'🥬', type:'number' },
+        { name:'อกไก่', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
         { name:'หมูกระจก', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
-        { name:'ผักกาดหอม', unit:'กิโล', category:'fresh', icon:'🥬', type:'number' },
+        { name:'ผักกาดหอม', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
         { name:'ใบพาสเล่ย์', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
         { name:'ลูกชิ้นปลา', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
         { name:'ไข่กุ้ง', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
 
         // seasoning
         { name:'น้ำมันกระเทียมเจียว', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
-        { name:'กระเทียมเจียว', unit:'กรัม', category:'seasoning', icon:'🧂', type:'number' },
+        { name:'กระเทียมเจียว', unit:'กรัม', category:'seasoning', icon:'🧂', type:'free' },
         { name:'ซอสดั้งเดิม', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
         { name:'น้ำมะนาว', unit:'ขวด', category:'seasoning', icon:'🧂', orderOnly:true },
         { name:'พริกป่น', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
@@ -456,6 +456,27 @@
         `;
         return div;
       }
+      
+// type: free → กรอกเลขได้อิสระ (ทศนิยมได้), ไม่มี max
+if (item.type === 'free') {
+  div.innerHTML = `
+    <div class="flex items-center justify-between">
+      <div class="flex-1">
+        <h4 class="font-medium text-gray-800">${item.name}</h4>
+      </div>
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2">
+          <input type="number" min="0" step="any"
+                 class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                 placeholder="0" onchange="updateStock('${item.name}', this.value)">
+          <span class="text-sm text-gray-600">${item.unit}</span>
+        </div>
+        ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
+      </div>
+    </div>
+  `;
+  return div;
+}
 
       return div;
     }
@@ -697,4 +718,5 @@
   </script>
 </body>
 </html>
+
 
