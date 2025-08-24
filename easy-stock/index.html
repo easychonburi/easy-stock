@@ -189,6 +189,33 @@
     /* ---------------- Config helpers ---------------- */
     const FRACTIONS = ['', '1/4', '1/2', '3/4']; // ช่องเศษ
     const WHOLE_MAX = 6; // สูงสุด 0–6
+<!-- ... ด้านบนมี const FRACTIONS และ const WHOLE_MAX อยู่แล้ว ... -->
+
+<script>
+  /* ---------------- Config helpers ---------------- */
+  const FRACTIONS = ['', '1/4', '1/2', '3/4'];
+  const WHOLE_MAX = 6;
+
+  /* ⬇️ วางฟังก์ชันนี้ต่อจาก WHOLE_MAX */
+  function numericOnly(inp, allowDecimal = true) {
+    let v = String(inp.value || '');
+    // ตัดทุกอย่างที่ไม่ใช่ตัวเลขหรือจุดทศนิยม
+    v = v.replace(/[^\d.]/g, '');
+    // อนุญาตจุดทศนิยมได้แค่ 1 จุด
+    if (allowDecimal) {
+      const parts = v.split('.');
+      if (parts.length > 2) {
+        v = parts[0] + '.' + parts.slice(1).join('');
+      }
+    } else {
+      v = v.replace(/\./g, '');
+    }
+    // ถ้าขึ้นต้นด้วยจุด ให้เติม 0 นำหน้า (เช่น ".5" -> "0.5")
+    if (v.startsWith('.')) v = '0' + v;
+
+    inp.value = v;
+  }
+</script>
 
     // ใช้ hash id จากชื่อ (รองรับไทย/อีโมจิ)
     function hashId(name) {
@@ -459,7 +486,7 @@
         return div;
       }
       
-// type: free → กรอกเลขได้อิสระ (ทศนิยมได้), ไม่มี max
+// type: free → กรอกเลขได้อิสระ (ทศนิยมได้) แต่ให้เป็น "เลขเท่านั้น"
 if (item.type === 'free') {
   div.innerHTML = `
     <div class="flex items-center justify-between">
@@ -468,9 +495,14 @@ if (item.type === 'free') {
       </div>
       <div class="flex items-center space-x-3">
         <div class="flex items-center space-x-2">
-          <input type="number" min="0" step="any"
-                 class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
-                 placeholder="0" onchange="updateStock('${item.name}', this.value)">
+          <input
+            type="text"
+            inputmode="decimal"
+            placeholder="0"
+            class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+            oninput="numericOnly(this, true); updateStock('${item.name}', this.value)"
+            onchange="numericOnly(this, true); updateStock('${item.name}', this.value)"
+          >
           <span class="text-sm text-gray-600">${item.unit}</span>
         </div>
         ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
@@ -720,6 +752,7 @@ if (item.type === 'free') {
   </script>
 </body>
 </html>
+
 
 
 
