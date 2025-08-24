@@ -228,19 +228,21 @@
     // โหมดเปิดร้าน (ไม่มีปุ่มสั่งเพิ่ม)
     const openModeItemsBase = [
   { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
-  { name: 'อกไก่', unit: 'กิโล', type:'free' },        // ← free
+  { name: 'อกไก่', unit: 'กิโล', type:'free' },
   { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
-  { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },   // ← free
+  { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },
   { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
   { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
-  { name: 'โค้ก', unit: 'ขวด', type:'number' },
-  { name: 'สไปร์ท', unit: 'ขวด', type:'number' },
-  { name: 'น้ำแดง', unit: 'ขวด', type:'number' },
-  { name: 'น้ำส้ม', unit: 'ขวด', type:'number' },
-  { name: 'เก๊กฮวย', unit: 'ขวด', type:'number' },
-  { name: 'อัญชัน', unit: 'ขวด', type:'number' },
-  { name: 'ชาไทย', unit: 'ขวด', type:'number' },
-  { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'number' },
+
+  // เปลี่ยนเครื่องดื่มเป็น free ทั้งหมด
+  { name: 'โค้ก',        unit: 'ขวด', type:'free' },
+  { name: 'สไปร์ท',      unit: 'ขวด', type:'free' },
+  { name: 'น้ำแดง',      unit: 'ขวด', type:'free' },
+  { name: 'น้ำส้ม',      unit: 'ขวด', type:'free' },
+  { name: 'เก๊กฮวย',     unit: 'ขวด', type:'free' },
+  { name: 'อัญชัน',      unit: 'ขวด', type:'free' },
+  { name: 'ชาไทย',       unit: 'ขวด', type:'free' },
+  { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'free' },
 ];
 
     // โหมดปิดร้าน (แยกหมวด + ปุ่มสั่งเพิ่ม)
@@ -284,14 +286,14 @@
         { name:'ถุงหิ้วพลาสติก 8×16', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
         { name:'สติ๊กเกอร์ ดั้งเดิม', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
         { name:'สติ๊กเกอร์ แซ่บ', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'น้ำเปล่า', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำโค้ก', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำส้ม', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำแดง', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำสไปร์ท', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'น้ำอัญชัน', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
-        { name:'ชาไทย', unit:'ขวด', category:'packaging', icon:'📦', type:'number' },
+     { name:'น้ำเปล่า',   unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำโค้ก',    unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำส้ม',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำแดง',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำสไปร์ท',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'น้ำอัญชัน',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+{ name:'ชาไทย',      unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
         ...packagingReceipts,
         { name:'ตะเกียบ', unit:'', category:'packaging', icon:'📦', orderOnly:true },
 
@@ -718,5 +720,6 @@ if (item.type === 'free') {
   </script>
 </body>
 </html>
+
 
 
