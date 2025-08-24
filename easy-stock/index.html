@@ -9,9 +9,7 @@
   <script>
     tailwind.config = {
       theme: {
-        extend: {
-          fontFamily: { kanit: ['Kanit','sans-serif'] }
-        }
+        extend: { fontFamily: { kanit: ['Kanit','sans-serif'] } }
       }
     }
   </script>
@@ -31,9 +29,7 @@
         <button onclick="selectBranch('อมตะ')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-2xl">🏢</span>
-              </div>
+              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4"><span class="text-2xl">🏢</span></div>
               <div class="text-left">
                 <h3 class="font-semibold text-gray-800">สาขาอมตะ</h3>
                 <p class="text-sm text-gray-500">Amata Branch</p>
@@ -46,9 +42,7 @@
         <button onclick="selectBranch('พระยาสัจจา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-2xl">🏪</span>
-              </div>
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4"><span class="text-2xl">🏪</span></div>
               <div class="text-left">
                 <h3 class="font-semibold text-gray-800">สาขาพระยาสัจจา</h3>
                 <p class="text-sm text-gray-500">Prayasatcha Branch</p>
@@ -61,9 +55,7 @@
         <button onclick="selectBranch('บางแสน')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
           <div class="flex items-center justify-between">
             <div class="flex items-center">
-              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                <span class="text-2xl">🏖️</span>
-              </div>
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4"><span class="text-2xl">🏖️</span></div>
               <div class="text-left">
                 <h3 class="font-semibold text-gray-800">สาขาบางแสน</h3>
                 <p class="text-sm text-gray-500">Bangsaen Branch</p>
@@ -196,14 +188,15 @@
     let currentConfirmItem = '';
     let customOrders = [];
 
-    // ---------- รายการสินค้า ----------
+    /* ---------- รายการสินค้า ---------- */
+    // โหมดเปิดร้าน
     const openModeItems = [
-      { name: 'เส้นหมี่', unit: 'ห่อ', category: 'main' },                // เศษได้
-      { name: 'อกไก่', unit: 'กิโล', category: 'main' },                  // กิโล
-      { name: 'หมูกระจก', unit: 'ถุง', category: 'main' },                // เศษได้
-      { name: 'ผักกาดหอม', unit: 'กิโล', category: 'main' },             // กิโล
-      { name: 'กล่อง 26 oz', unit: 'แถว', category: 'main' },            // เศษได้
-      { name: 'กล่อง 32 oz', unit: 'แถว', category: 'main' },            // เศษได้
+      { name: 'เส้นหมี่', unit: 'ห่อ', category: 'main' },              // เศษได้
+      { name: 'อกไก่', unit: 'กิโล', category: 'main' },                // กิโล
+      { name: 'หมูกระจก', unit: 'ถุง', category: 'main' },              // เศษได้
+      { name: 'ผักกาดหอม', unit: 'กิโล', category: 'main' },           // กิโล
+      { name: 'กล่อง 26 oz', unit: 'แถว', category: 'main' },          // เศษได้
+      { name: 'กล่อง 32 oz', unit: 'แถว', category: 'main' },          // เศษได้
       { name: 'โค้ก', unit: 'ขวด', category: 'main' },
       { name: 'สไปร์ท', unit: 'ขวด', category: 'main' },
       { name: 'น้ำแดง', unit: 'ขวด', category: 'main' },
@@ -214,20 +207,21 @@
       { name: 'ชาเขียวมะลิ', unit: 'ขวด', category: 'main' }
     ];
 
+    // โหมดปิดร้าน (ละเอียด)
     const closeModeItems = [
       // วัตถุดิบสด
-      { name: 'เส้นหมี่', unit: 'ห่อ', category: 'fresh', icon:'🥬' },    // เศษได้
+      { name: 'เส้นหมี่', unit: 'ห่อ', category: 'fresh', icon:'🥬' },  // เศษได้
       { name: 'อกไก่', unit: 'กิโล', category: 'fresh', icon:'🥬' },
-      { name: 'หมูกระจก', unit: 'ถุง', category: 'fresh', icon:'🥬' },    // เศษได้
+      { name: 'หมูกระจก', unit: 'ถุง', category: 'fresh', icon:'🥬' },  // เศษได้
       { name: 'ผักกาดหอม', unit: 'กิโล', category: 'fresh', icon:'🥬' },
-      { name: 'ใบพาสเล่ย์', unit: 'ถุง', category: 'fresh', icon:'🥬' },  // เศษได้
+      { name: 'ใบพาสเล่ย์', unit: 'ถุง', category: 'fresh', icon:'🥬' },// เศษได้
       { name: 'ลูกชิ้นปลา', unit: '', category: 'fresh', icon:'🥬', orderOnly:true },
       { name: 'ไข่กุ้ง', unit: '', category: 'fresh', icon:'🥬', orderOnly:true },
 
       // เครื่องปรุง
       { name: 'น้ำมันกระเทียมเจียว', unit: 'แกลลอน', category: 'seasoning', icon:'🧂' }, // เศษได้
       { name: 'กระเทียมเจียว', unit: 'กรัม', category: 'seasoning', icon:'🧂' },
-      { name: 'ซอสดั้งเดิม', unit: 'แกลลอน', category: 'seasoning', icon:'🧂' },           // เศษได้
+      { name: 'ซอสดั้งเดิม', unit: 'แกลลอน', category: 'seasoning', icon:'🧂' },         // เศษได้
 
       // ติ๊กสั่งเพิ่มอย่างเดียว
       { name: 'น้ำมะนาว', unit: '', category: 'seasoning', icon:'🧂', orderOnly:true },
@@ -255,7 +249,7 @@
       { name: 'น้ำอัญชัน', unit: 'ขวด', category: 'packaging', icon:'📦' },
       { name: 'ชาไทย', unit: 'ขวด', category: 'packaging', icon:'📦' },
 
-      // กระดาษใบเสร็จ: ติ๊กสั่งเพิ่มอย่างเดียว (แตกใหญ่/เล็กในขั้น render ถ้าเป็นพระยาสัจจา)
+      // กระดาษใบเสร็จ: ติ๊กสั่งเพิ่มอย่างเดียว (แตกใหญ่/เล็กตอน render ถ้าเป็นพระยาสัจจา)
       { name: 'กระดาษใบเสร็จ', unit: '', category: 'packaging', icon:'📦', orderOnly:true },
 
       { name: 'ตะเกียบ', unit: '', category: 'packaging', icon:'📦', orderOnly:true },
@@ -272,7 +266,7 @@
       { name: 'หมวกคลุมผม', unit: '', category: 'cleaning', icon:'🧹', orderOnly:true }
     ];
 
-    // ---------- กำหนดรายการที่นับเป็น "เศษ" ----------
+    /* ---------- รายการที่นับเป็น "เศษ" ---------- */
     const FRACTIONAL_ITEMS = new Set([
       'เส้นหมี่',
       'ซอสดั้งเดิม',
@@ -286,7 +280,7 @@
     ]);
     function isFractional(item){ return item.unit === 'แกลลอน' || FRACTIONAL_ITEMS.has(item.name); }
 
-    // ---------- Flow ----------
+    /* ---------- Flow ---------- */
     function selectBranch(branch){
       currentBranch = branch;
       document.getElementById('selectedBranch').textContent = branch;
@@ -375,7 +369,7 @@
       updateProgress();
     }
 
-    // ---------- Render item ----------
+    /* ---------- Render item ---------- */
     function createItemElement(item){
       const div = document.createElement('div');
       div.className='bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100';
@@ -448,14 +442,13 @@
       return div;
     }
 
-    // ---------- Update handlers ----------
+    /* ---------- Update handlers ---------- */
     function updateStock(itemName,val){
       stockData[itemName] = (val ?? '') === '' ? '' : String(val);
       updateProgress();
     }
 
     function updateFractionalStock(itemName){
-      // เลือก select สองตัวของไอเท็มนี้ (อิงจาก attribute onchange ที่มีชื่อ item)
       const selects = document.querySelectorAll(`select[onchange*="${CSS.escape(itemName)}"]`);
       if(selects.length===2){
         const whole = selects[0].value;  // 0..6
@@ -467,11 +460,10 @@
         updateProgress();
       }
     }
-    // เพื่อรองรับชื่อฟังก์ชันเก่าที่โค้ดบางส่วนเคยเรียก
-    function updateNoodleStock(n){ updateFractionalStock(n); }
+    function updateNoodleStock(n){ updateFractionalStock(n); } // เผื่อโค้ดเดิมเรียก
     function updateGallonStock(n){ updateFractionalStock(n); }
 
-    // ---------- สั่งเพิ่ม ----------
+    /* ---------- สั่งเพิ่ม ---------- */
     function toggleOrderRequest(itemName,checked,checkbox){
       if(checked){
         currentConfirmItem = itemName;
@@ -502,13 +494,13 @@
       window.currentCheckbox = null;
     }
 
-    // ---------- Progress ----------
+    /* ---------- Progress ---------- */
     function updateProgress(){
       const items = currentMode==='open' ? openModeItems : closeModeItems;
       let completed = 0;
       items.forEach(item=>{
         if(item.orderOnly){
-          // นับว่า “ผ่าน” โดยไม่ต้องติ๊ก เพื่อให้โปรเกรสไม่ค้าง
+          // ไม่นับบังคับกรอก เพื่อไม่ให้โปรเกรสค้าง
           completed++;
         }else{
           if(stockData[item.name] && stockData[item.name] !== '') completed++;
@@ -519,7 +511,7 @@
       document.getElementById('progressBar').style.width = pct + '%';
     }
 
-    // ---------- Save / Summary ----------
+    /* ---------- Save / Summary ---------- */
     function saveStock(){
       if(currentMode==='open'){ confirmSaveStock(); }
       else { showOrderSummary(); showScreen('summaryScreen'); }
@@ -550,31 +542,38 @@
       }
     }
 
+    // ส่ง Telegram: 2 ข้อความ (คงเหลือ/สั่งเพิ่ม) – ต้องมี telegram.js ฝั่ง Netlify ตามที่คุยกัน
     async function confirmSaveStock(){
       const now = new Date();
+      const items = currentMode === 'open' ? openModeItems : closeModeItems;
+
+      // รายการคงเหลือ (เฉพาะที่ไม่ใช่ orderOnly และมีการกรอก)
+      const stocks = items
+        .filter(it => !it.orderOnly && stockData[it.name] && stockData[it.name] !== '')
+        .map(it => ({ name: it.name, value: stockData[it.name], unit: it.unit || '' }));
+
       const payload = {
         branch: currentBranch,
         mode: currentMode,
         date: now.toLocaleDateString('th-TH'),
         time: now.toLocaleTimeString('th-TH'),
-        progress: parseInt(document.getElementById('progressText').textContent)||0,
-        orders: Object.keys(orderRequests).filter(k=>orderRequests[k]===true),
+        progress: parseInt(document.getElementById('progressText').textContent) || 0,
+        stocks,
+        orders: Object.keys(orderRequests).filter(k => orderRequests[k] === true),
       };
-      // ส่งแจ้งเตือนไป Netlify Function → Telegram
+
       try{
         await fetch('/.netlify/functions/telegram', {
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:{ 'Content-Type':'application/json' },
           body: JSON.stringify(payload)
         });
       }catch(e){ console.error('Telegram error:', e); }
 
-      const report = { ...payload, stockData, customOrders };
-      console.log('Stock Report:', report);
       document.getElementById('successModal').classList.remove('hidden');
     }
 
-    // ---------- Custom orders ----------
+    /* ---------- Custom orders ---------- */
     function addCustomOrder(){
       const input = document.getElementById('customItemName');
       const name = (input.value||'').trim();
@@ -609,7 +608,7 @@
       }
     }
 
-    // ---------- Utils ----------
+    /* ---------- Utils ---------- */
     function resetApp(){
       currentBranch=''; currentMode=''; stockData={}; orderRequests={}; customOrders=[];
       document.getElementById('successModal').classList.add('hidden');
