@@ -519,26 +519,38 @@
     }
 
     function confirmOrder(){
-      if (window.currentAction === 'remove') {
-        delete orderRequests[currentConfirmItem];
-      } else {
-        orderRequests[currentConfirmItem] = true;
-      }
-      closeModal();
-      refreshOrderButtonState(currentConfirmItem);
-      updateProgress();
-    }
+  // เก็บชื่อรายการไว้ก่อน เพราะ closeModal() จะเคลียร์ค่า
+  const item = currentConfirmItem;
 
+  if (window.currentAction === 'remove') {
+    delete orderRequests[item];
+  } else {
+    orderRequests[item] = true;
+  }
+
+  // อัปเดตปุ่มให้เป็นเขียว/ส้ม ก่อนปิดโมดัล
+  refreshOrderButtonState(item);
+  updateProgress();
+
+  // ค่อยปิดโมดัลทีหลัง
+  closeModal();
+}
+    
     function closeModal(){
-      document.getElementById('confirmModal').classList.add('hidden');
-      // เผื่อกรณี checkbox กดยกเลิก ให้ติ๊กกลับ
-      if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[currentConfirmItem]) {
-        window.currentCheckbox.checked = false;
-      }
-      window.currentCheckbox = null;
-      currentConfirmItem = '';
-      window.currentAction = null;
-    }
+  const item = currentConfirmItem; // เก็บชื่อไว้ก่อน
+
+  document.getElementById('confirmModal').classList.add('hidden');
+
+  // ถ้าเป็นกรณีติ๊ก checkbox แล้วกดยกเลิก ให้ติ๊กกลับ
+  if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[item]) {
+    window.currentCheckbox.checked = false;
+  }
+
+  // เคลียร์สถานะ
+  window.currentCheckbox = null;
+  currentConfirmItem = '';
+  window.currentAction = null;
+}
 
     /* ---------------- Progress ---------------- */
     function updateProgress(){
@@ -685,3 +697,4 @@
   </script>
 </body>
 </html>
+
