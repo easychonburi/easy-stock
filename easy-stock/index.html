@@ -1,748 +1,822 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ระบบเช็คสต๊อก Easy หมี่ไก่ฉีก</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { kanit: ['Kanit', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ระบบเช็คสต๊อก Easy หมี่ไก่ฉีก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { kanit: ['Kanit', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
 </head>
 <body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen font-kanit">
-    <div id="branchScreen" class="min-h-screen flex flex-col">
-    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center">
-      <h1 class="text-2xl font-bold mb-2">🍜 Easy หมี่ไก่ฉีก</h1>
-      <p class="text-orange-100">ระบบเช็คสต๊อก</p>
-    </div>
-    <div class="flex-1 p-6">
-      <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">เลือกสาขา</h2>
-      <div class="space-y-4">
-        <button onclick="selectBranch('อมตะ')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">🏢</div>
-              <div class="text-left">
-                <h3 class="font-semibold text-gray-800">สาขาอมตะ</h3>
-                <p class="text-sm text-gray-500">Amata Branch</p>
-              </div>
-            </div>
-            <span class="text-orange-500 text-xl">→</span>
-          </div>
-        </button>
+  <!-- Branch Selection -->
+  <div id="branchScreen" class="min-h-screen flex flex-col">
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center">
+      <h1 class="text-2xl font-bold mb-2">🍜 Easy หมี่ไก่ฉีก</h1>
+      <p class="text-orange-100">ระบบเช็คสต๊อก</p>
+    </div>
+    <div class="flex-1 p-6">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">เลือกสาขา</h2>
+      <div class="space-y-4">
+        <button onclick="selectBranch('อมตะ')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">🏢</div>
+              <div class="text-left">
+                <h3 class="font-semibold text-gray-800">สาขาอมตะ</h3>
+                <p class="text-sm text-gray-500">Amata Branch</p>
+              </div>
+            </div>
+            <span class="text-orange-500 text-xl">→</span>
+          </div>
+        </button>
 
-        <button onclick="selectBranch('พระยาสัจจา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">🏪</div>
-              <div class="text-left">
-                <h3 class="font-semibold text-gray-800">สาขาพระยาสัจจา</h3>
-                <p class="text-sm text-gray-500">Prayasatcha Branch</p>
-              </div>
-            </div>
-            <span class="text-orange-500 text-xl">→</span>
-          </div>
-        </button>
+        <button onclick="selectBranch('พระยาสัจจา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">🏪</div>
+              <div class="text-left">
+                <h3 class="font-semibold text-gray-800">สาขาพระยาสัจจา</h3>
+                <p class="text-sm text-gray-500">Prayasatcha Branch</p>
+              </div>
+            </div>
+            <span class="text-orange-500 text-xl">→</span>
+          </div>
+        </button>
 
-        <button onclick="selectBranch('บางแสน')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">🏖️</div>
-              <div class="text-left">
-                <h3 class="font-semibold text-gray-800">สาขาบางแสน</h3>
-                <p class="text-sm text-gray-500">Bangsaen Branch</p>
-              </div>
-            </div>
-            <span class="text-orange-500 text-xl">→</span>
-          </div>
-        </button>
+        <button onclick="selectBranch('บางแสน')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">🏖️</div>
+              <div class="text-left">
+                <h3 class="font-semibold text-gray-800">สาขาบางแสน</h3>
+                <p class="text-sm text-gray-500">Bangsaen Branch</p>
+              </div>
+            </div>
+            <span class="text-orange-500 text-xl">→</span>
+          </div>
+        </button>
 
-                <button onclick="selectBranch('ศรีราชา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">🏭</div>
-              <div class="text-left">
-                <h3 class="font-semibold text-gray-800">สาขาศรีราชา</h3>
-                <p class="text-sm text-gray-500">Sriracha Branch</p>
-              </div>
-            </div>
-            <span class="text-orange-500 text-xl">→</span>
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
+        <!-- สาขาศรีราชา -->
+        <button onclick="selectBranch('ศรีราชา')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">🏭</div>
+              <div class="text-left">
+                <h3 class="font-semibold text-gray-800">สาขาศรีราชา</h3>
+                <p class="text-sm text-gray-500">Sriracha Branch</p>
+              </div>
+            </div>
+            <span class="text-orange-500 text-xl">→</span>
+          </div>
+        </button>
 
-    <div id="modeScreen" class="min-h-screen flex flex-col hidden">
-    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center relative">
-      <button onclick="goBack('branchScreen')" class="absolute left-4 top-6 text-white text-xl">←</button>
-      <h1 class="text-xl font-bold mb-1">สาขา <span id="selectedBranch"></span></h1>
-      <p class="text-orange-100">เลือกโหมดการทำงาน</p>
-    </div>
-    <div class="flex-1 p-6">
-      <div class="space-y-6">
-        <button onclick="selectMode('open')" class="w-full bg-gradient-to-r from-green-400 to-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
-          <div class="text-center">
-            <div class="text-4xl mb-3">🔓</div>
-            <h3 class="text-xl font-bold">เช็คสต๊อกเปิดร้าน</h3>
-          </div>
-        </button>
-        <button onclick="selectMode('close')" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
-          <div class="text-center">
-            <div class="text-4xl mb-3">🌙</div>
-            <h3 class="text-xl font-bold">เช็คสต๊อกปิดร้าน</h3>
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
+        <!-- สาขาหนองตำลึง (ครัวกลาง) -->
+        <button onclick="selectBranch('หนองตำลึง')" class="w-full bg-white rounded-xl p-4 shadow-lg border-2 border-transparent hover:border-orange-300 transition-all duration-200 active:scale-95">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">👨‍🍳</div>
+              <div class="text-left">
+                <h3 class="font-semibold text-gray-800">สาขาหนองตำลึง</h3>
+                <p class="text-sm text-gray-500">ครัวกลาง Nong Tamlueng</p>
+              </div>
+            </div>
+            <span class="text-orange-500 text-xl">→</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <div id="stockScreen" class="min-h-screen flex flex-col hidden">
-    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
-      <button onclick="goBack('modeScreen')" class="text-white text-xl mb-2">←</button>
-      <div class="flex justify-between items-center mb-3">
-        <div>
-          <h1 class="text-lg font-bold">เช็คสต๊อก</h1>
-          <p class="text-orange-100 text-sm"><span id="modeText"></span></p>
-        </div>
-        <div class="text-right">
-          <div class="text-2xl font-bold" id="progressText">0%</div>
-          <div class="text-xs text-orange-100">เสร็จแล้ว</div>
-        </div>
-      </div>
-      <div class="w-full bg-orange-300 rounded-full h-3">
-        <div id="progressBar" class="bg-white h-3 rounded-full transition-all duration-300" style="width:0%"></div>
-      </div>
-    </div>
+  <!-- Mode Selection -->
+  <div id="modeScreen" class="min-h-screen flex flex-col hidden">
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-6 text-center relative">
+      <button onclick="goBack('branchScreen')" class="absolute left-4 top-6 text-white text-xl">←</button>
+      <h1 class="text-xl font-bold mb-1">สาขา <span id="selectedBranch"></span></h1>
+      <p class="text-orange-100">เลือกโหมดการทำงาน</p>
+    </div>
+    <div class="flex-1 p-6">
+      <div class="space-y-6">
+        <button onclick="selectMode('open')" class="w-full bg-gradient-to-r from-green-400 to-green-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+          <div class="text-center">
+            <div class="text-4xl mb-3">🔓</div>
+            <h3 class="text-xl font-bold">เช็คสต๊อกเปิดร้าน</h3>
+          </div>
+        </button>
+        <button onclick="selectMode('close')" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+          <div class="text-center">
+            <div class="text-4xl mb-3">🌙</div>
+            <h3 class="text-xl font-bold">เช็คสต๊อกปิดร้าน</h3>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
 
-    <div class="flex-1 p-4 pb-24" id="stockItems"></div>
+  <!-- Stock Screen -->
+  <div id="stockScreen" class="min-h-screen flex flex-col hidden">
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
+      <button onclick="goBack('modeScreen')" class="text-white text-xl mb-2">←</button>
+      <div class="flex justify-between items-center mb-3">
+        <div>
+          <h1 class="text-lg font-bold">เช็คสต๊อก</h1>
+          <p class="text-orange-100 text-sm"><span id="modeText"></span></p>
+        </div>
+        <div class="text-right">
+          <div class="text-2xl font-bold" id="progressText">0%</div>
+          <div class="text-xs text-orange-100">เสร็จแล้ว</div>
+        </div>
+      </div>
+      <div class="w-full bg-orange-300 rounded-full h-3">
+        <div id="progressBar" class="bg-white h-3 rounded-full transition-all duration-300" style="width:0%"></div>
+      </div>
+    </div>
 
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
-      <button onclick="saveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
-        💾 บันทึกการเช็คสต๊อกวันนี้
-      </button>
-    </div>
-  </div>
+    <div class="flex-1 p-4 pb-24" id="stockItems"></div>
 
-    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-    <div class="bg-white rounded-xl p-6 max-w-sm w-full">
-      <div class="text-center">
-        <div class="text-4xl mb-4">❓</div>
-        <h3 id="confirmModalTitle" class="text-lg font-semibold mb-2">
-          ต้องการสั่งรายการนี้เพิ่มใช่ไหม?
-        </h3>
-        <p id="confirmItemName" class="text-2xl font-extrabold text-gray-900 tracking-wide mb-6"></p>
-        <div class="flex space-x-3">
-          <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium">ยกเลิก</button>
-          <button onclick="confirmOrder()" class="flex-1 bg-orange-500 text-white py-3 rounded-lg font-medium">ยืนยัน</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
+      <button onclick="saveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+        💾 บันทึกการเช็คสต๊อกวันนี้
+      </button>
+    </div>
+  </div>
 
-    <div id="summaryScreen" class="min-h-screen flex flex-col hidden">
-    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
-      <button onclick="goBack('stockScreen')" class="text-white text-xl mb-2">←</button>
-      <div class="text-center">
-        <h1 class="text-lg font-bold">สรุปรายการสั่งเพิ่ม</h1>
-        <p class="text-orange-100 text-sm">ตรวจสอบก่อนบันทึก</p>
-      </div>
-    </div>
-    <div class="flex-1 p-4 pb-24">
-      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4">
-        <div class="flex items-center mb-3">
-          <span class="text-2xl mr-2">📋</span>
-          <h3 class="text-lg font-semibold text-gray-800">รายการที่สั่งเพิ่ม</h3>
-        </div>
-        <div id="orderSummaryList"></div>
-      </div>
-    </div>
-    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
-      <button onclick="confirmSaveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
-        ✅ ยืนยันและบันทึก
-      </button>
-    </div>
-  </div>
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+    <div class="bg-white rounded-xl p-6 max-w-sm w-full">
+      <div class="text-center">
+        <div class="text-4xl mb-4">❓</div>
+        <h3 id="confirmModalTitle" class="text-lg font-semibold mb-2">
+          ต้องการสั่งรายการนี้เพิ่มใช่ไหม?
+        </h3>
+        <p id="confirmItemName" class="text-2xl font-extrabold text-gray-900 tracking-wide mb-6"></p>
+        <div class="flex space-x-3">
+          <button onclick="closeModal()" class="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-medium">ยกเลิก</button>
+          <button onclick="confirmOrder()" class="flex-1 bg-orange-500 text-white py-3 rounded-lg font-medium">ยืนยัน</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
-S   <div class="bg-white rounded-xl p-6 max-w-sm w-full">
-      <div class="text-center">
-        <div class="text-4xl mb-4">✅</div>
-        <h3 class="text-lg font-semibold mb-2">บันทึกสำเร็จ!</h3>
-        <p class="text-gray-600 text-sm mb-6">ข้อมูลการเช็คสต๊อกได้รับการบันทึกแล้ว</p>
-        <button onclick="resetApp()" class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium">เริ่มใหม่</button>
-      </div>
-    </div>
-  </div>
+  <!-- Summary Screen (orders only) -->
+  <div id="summaryScreen" class="min-h-screen flex flex-col hidden">
+    <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4">
+      <button onclick="goBack('stockScreen')" class="text-white text-xl mb-2">←</button>
+      <div class="text-center">
+        <h1 class="text-lg font-bold">สรุปรายการสั่งเพิ่ม</h1>
+        <p class="text-orange-100 text-sm">ตรวจสอบก่อนบันทึก</p>
+      </div>
+    </div>
+    <div class="flex-1 p-4 pb-24">
+      <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4">
+        <div class="flex items-center mb-3">
+          <span class="text-2xl mr-2">📋</span>
+          <h3 class="text-lg font-semibold text-gray-800">รายการที่สั่งเพิ่ม</h3>
+        </div>
+        <div id="orderSummaryList"></div>
+      </div>
+    </div>
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200">
+      <button onclick="confirmSaveStock()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95">
+        ✅ ยืนยันและบันทึก
+      </button>
+    </div>
+  </div>
 
-  <script>
-    /* ---------------- State ---------------- */
-    let currentBranch = '';
-    let currentMode = '';
-    let stockData = {};
-    let orderRequests = {};
-    let currentConfirmItem = '';
-    let customOrders = [];
-    window.currentAction = null; // 'add' | 'remove'
-    window.currentCheckbox = null; // สำหรับติ๊ก orderOnly
+  <!-- Success Modal -->
+  <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+    <div class="bg-white rounded-xl p-6 max-w-sm w-full">
+      <div class="text-center">
+        <div class="text-4xl mb-4">✅</div>
+        <h3 class="text-lg font-semibold mb-2">บันทึกสำเร็จ!</h3>
+        <p class="text-gray-600 text-sm mb-6">ข้อมูลการเช็คสต๊อกได้รับการบันทึกแล้ว</p>
+        <button onclick="resetApp()" class="w-full bg-orange-500 text-white py-3 rounded-lg font-medium">เริ่มใหม่</button>
+      </div>
+    </div>
+  </div>
 
-    /* ---------------- Config helpers ---------------- */
-    const FRACTIONS = ['', '1/4', '1/2', '3/4']; // ช่องเศษ
-    const WHOLE_MAX = 6; // สูงสุด 0–6
+  <script>
+    /* ---------------- State ---------------- */
+    let currentBranch = '';
+    let currentMode = '';
+    let stockData = {};
+    let orderRequests = {};
+    let currentConfirmItem = '';
+    let customOrders = [];
+    window.currentAction = null; // 'add' | 'remove'
+    window.currentCheckbox = null; // สำหรับติ๊ก orderOnly
 
-    /* กรองให้ช่อง free เป็นเลขเท่านั้น (อนุญาตทศนิยม) */
-    function numericOnly(inp, allowDecimal = true) {
-      let v = String(inp.value || '');
-      v = v.replace(/[^\d.]/g, '');
-      if (allowDecimal) {
-        const parts = v.split('.');
-        if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
-      } else {
-        v = v.replace(/\./g, '');
-      }
-      if (v.startsWith('.')) v = '0' + v;
-      inp.value = v;
-    }
+    /* ---------------- Config helpers ---------------- */
+    const FRACTIONS = ['', '1/4', '1/2', '3/4']; // ช่องเศษ
+    const WHOLE_MAX = 6; // สูงสุด 0–6
 
-    // ใช้ hash id จากชื่อ (รองรับไทย/อีโมจิ)
-    function hashId(name) {
-      // FNV-1a 32-bit
-      let hash = 0x811c9dc5;
-      for (const ch of String(name)) {
-        hash ^= ch.codePointAt(0);
-        hash = (hash >>> 0) * 16777619 >>> 0;
-      }
-      return 'orderBtn-' + hash.toString(16);
-    }
-    function btnIdForItem(name){ return hashId(name); }
+    function numericOnly(inp, allowDecimal = true) {
+      let v = String(inp.value || '');
+      v = v.replace(/[^\d.]/g, '');
+      if (allowDecimal) {
+        const parts = v.split('.');
+        if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+      } else {
+        v = v.replace(/\./g, '');
+      }
+      if (v.startsWith('.')) v = '0' + v;
+      inp.value = v;
+    }
 
-    // HTML ปุ่มสั่งเพิ่ม (สีส้ม/เขียวตามสถานะ)
-    function getOrderBtnHTML(name){
-      const id = btnIdForItem(name);
-      const ordered = !!orderRequests[name];
-      const base = 'px-3 py-2 rounded-lg text-sm font-medium transition-colors';
-      const cls = ordered
-        ? 'bg-green-500 hover:bg-green-600 text-white ' + base
-        : 'bg-orange-500 hover:bg-orange-600 text-white ' + base;
-      const label = ordered ? 'สั่งแล้ว ✓' : 'สั่งเพิ่ม';
-      return `<button id="${id}" data-item="${name}" onclick="requestOrder('${name}')" class="${cls}">${label}</button>`;
-    }
-    function refreshOrderButtonState(name){
-      const btn = document.getElementById(btnIdForItem(name));
-      if (!btn) return;
-      const ordered = !!orderRequests[name];
-      btn.className = (ordered
-        ? 'bg-green-500 hover:bg-green-600 text-white '
-        : 'bg-orange-500 hover:bg-orange-600 text-white ')
-        + 'px-3 py-2 rounded-lg text-sm font-medium transition-colors';
-      btn.textContent = ordered ? 'สั่งแล้ว ✓' : 'สั่งเพิ่ม';
-    }
+    function hashId(name) {
+      let hash = 0x811c9dc5;
+      for (const ch of String(name)) {
+        hash ^= ch.codePointAt(0);
+        hash = (hash >>> 0) * 16777619 >>> 0;
+      }
+      return 'orderBtn-' + hash.toString(16);
+    }
+    function btnIdForItem(name){ return hashId(name); }
 
-    /* ---------------- Item lists ---------------- */
-    // โหมดเปิดร้าน (ไม่มีปุ่มสั่งเพิ่ม)
-    const openModeItemsBase = [
-      { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
-      { name: 'อกไก่', unit: 'กิโล', type:'free' },
-      { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
-      { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },
-      { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
-      { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
+    function getOrderBtnHTML(name){
+      const id = btnIdForItem(name);
+      const ordered = !!orderRequests[name];
+      const base = 'px-3 py-2 rounded-lg text-sm font-medium transition-colors';
+      const cls = ordered
+        ? 'bg-green-500 hover:bg-green-600 text-white ' + base
+        : 'bg-orange-500 hover:bg-orange-600 text-white ' + base;
+      const label = ordered ? 'สั่งแล้ว ✓' : 'สั่งเพิ่ม';
+      return `<button id="${id}" data-item="${name}" onclick="requestOrder('${name}')" class="${cls}">${label}</button>`;
+    }
+    function refreshOrderButtonState(name){
+      const btn = document.getElementById(btnIdForItem(name));
+      if (!btn) return;
+      const ordered = !!orderRequests[name];
+      btn.className = (ordered
+        ? 'bg-green-500 hover:bg-green-600 text-white '
+        : 'bg-orange-500 hover:bg-orange-600 text-white ')
+        + 'px-3 py-2 rounded-lg text-sm font-medium transition-colors';
+      btn.textContent = ordered ? 'สั่งแล้ว ✓' : 'สั่งเพิ่ม';
+    }
 
-      // เครื่องดื่มเป็น free ทั้งหมด
-      { name: 'โค้ก',        unit: 'ขวด', type:'free' },
-      { name: 'สไปร์ท',      unit: 'ขวด', type:'free' },
-      { name: 'น้ำแดง',      unit: 'ขวด', type:'free' },
-      { name: 'น้ำส้ม',      unit: 'ขวด', type:'free' },
-      { name: 'เก๊กฮวย',     unit: 'ขวด', type:'free' },
-      { name: 'อัญชัน',      unit: 'ขวด', type:'free' },
-      { name: 'ชาไทย',       unit: 'ขวด', type:'free' },
-      { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'free' },
-    ];
+    /* ---------------- Item lists ---------------- */
 
-    // โหมดปิดร้าน (แยกหมวด + ปุ่มสั่งเพิ่ม)
-    function closeModeItemsForBranch(branch){
-      const packagingReceipts =
-        (branch === 'พระยาสัจจา')
-          ? [
-              { name:'กระดาษใบเสร็จ (ใหญ่)', unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
-              { name:'กระดาษใบเสร็จ (เล็ก)',  unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
-            ]
-          : [
-              { name:'กระดาษใบเสร็จ', unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
-            ];
+    // รายการเปิดร้านพื้นฐาน (สาขาหน้าร้านทั่วไป)
+    const openModeItemsBase = [
+      { name: 'เส้นหมี่', unit: 'ห่อ', type:'fraction' },
+      { name: 'อกไก่', unit: 'กิโล', type:'free' },
+      { name: 'หมูกระจก', unit: 'ถุง', type:'fraction' },
+      { name: 'ผักกาดหอม', unit: 'กิโล', type:'free' },
+      { name: 'กล่อง 26 oz', unit: 'แถว', type:'fraction' },
+      { name: 'กล่อง 32 oz', unit: 'แถว', type:'fraction' },
 
-      return [
-        // fresh
-        { name:'เส้นหมี่', unit:'ห่อ', category:'fresh', icon:'🥬', type:'fraction' },
-        { name:'อกไก่', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
-        { name:'หมูกระจก', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
-        { name:'ผักกาดหอม', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
-        { name:'ใบพาสเล่ย์', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
-        { name:'ลูกชิ้นปลา', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
-        { name:'ไข่กุ้ง', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
+      { name: 'โค้ก',        unit: 'ขวด', type:'free' },
+      { name: 'สไปร์ท',      unit: 'ขวด', type:'free' },
+      { name: 'น้ำแดง',      unit: 'ขวด', type:'free' },
+      { name: 'น้ำส้ม',      unit: 'ขวด', type:'free' },
+      { name: 'เก๊กฮวย',     unit: 'ขวด', type:'free' },
+      { name: 'อัญชัน',      unit: 'ขวด', type:'free' },
+      { name: 'ชาไทย',       unit: 'ขวด', type:'free' },
+      { name: 'ชาเขียวมะลิ', unit: 'ขวด', type:'free' },
+    ];
 
-        // seasoning
-        { name:'น้ำมันกระเทียมเจียว', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
-        { name:'กระเทียมเจียว', unit:'กรัม', category:'seasoning', icon:'🧂', type:'free' },
-        { name:'ซอสดั้งเดิม', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
-        { name:'น้ำมะนาว', unit:'ขวด', category:'seasoning', icon:'🧂', orderOnly:true },
-        { name:'พริกป่น', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
-        { name:'น้ำตาล', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
-        { name:'น้ำปลา', unit:'ขวด', category:'seasoning', icon:'🧂', orderOnly:true },
-        { name:'รสดี', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
+    // เปิดร้าน: คืนรายการตามสาขา
+    function openModeItemsForBranch(branch){
+      if (branch === 'หนองตำลึง') {
+        return [
+          { name:'อกไก่',           unit:'ถุง',    type:'free' },
+          { name:'หมูกระจก(ผัดแล้ว)', unit:'ถุง',  type:'free' },
+          { name:'ซอส',             unit:'แกลลอน', type:'free' },
+          { name:'น้ำมันกระเทียมเจียว', unit:'แกลลอน', type:'fraction' },
+          { name:'กระเทียมเจียว',  unit:'ถุง',    type:'free' },
+          { name:'เก๊กฮวย',         unit:'ขวด',    type:'free' },
+          { name:'อัญชัน',          unit:'ขวด',    type:'free' },
+          { name:'ชาไทย',           unit:'ขวด',    type:'free' },
+        ];
+      }
+      return openModeItemsBase;
+    }
 
-        // packaging + drinks
-        { name:'ถุงซีล 7×10', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'ถุงซีล 9×11.5', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'กล่อง 26 oz', unit:'แถว', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'กล่อง 32 oz', unit:'แถว', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'ถุงหิ้วพลาสติก 6×14', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'ถุงหิ้วพลาสติก 8×16', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'สติ๊กเกอร์ ดั้งเดิม', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'สติ๊กเกอร์ แซ่บ', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
-        { name:'น้ำเปล่า',   unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำโค้ก',    unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำส้ม',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำแดง',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำสไปร์ท',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'น้ำอัญชัน',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        { name:'ชาไทย',      unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
-        ...packagingReceipts,
-        { name:'ตะเกียบ', unit:'', category:'packaging', icon:'📦', orderOnly:true },
+    // ปิดร้าน: รายการตามสาขา
+    function closeModeItemsForBranch(branch){
+      // หนองตำลึง (ครัวกลาง)
+      if (branch === 'หนองตำลึง') {
+        return [
+          // วัตถุดิบ/เครื่องปรุง (free)
+          { name:'น้ำมัน',           unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ซีอิ๋วขาว',        unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'free' },
+          { name:'น้ำส้มสายชู',      unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'free' },
+          { name:'น้ำตาล',           unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'รสดีเหลือง',       unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'รสดีเขียว',        unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'รสดีส้ม',          unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ผงชูรส',           unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'พริกป่น',          unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'น้ำมันหอย',        unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'หมูกระจก(ยังไม่ผัด)', unit:'ถุง', category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ผงเก๊กฮวย',        unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ผงอัญชัน',         unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ผงชาไทยตรามือ',    unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'ผงชาไทยยอดชา',     unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'นมข้นจืด',         unit:'กระป๋อง', category:'seasoning', icon:'🧂', type:'free' },
+          { name:'เกลือ',            unit:'ถุง',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'น้ำมะนาว',         unit:'ขวด',     category:'seasoning', icon:'🧂', type:'free' },
+          { name:'นมข้นหวาน',        unit:'กระป๋อง', category:'seasoning', icon:'🧂', type:'free' },
 
-        // cleaning (order-only checkboxes)
-        { name:'ถุงขยะ', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'ทิชชู่เปียก', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'ทิชชู่แห้ง', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'น้ำยาถูพื้น', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'น้ำยาซักผ้า', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'น้ำยาล้างจาน', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'ฟองน้ำล้างจาน', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'ถุงมือ', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-        { name:'หมวกคลุมผม', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
-      ];
-    }
+          // แผ่นสติ๊กเกอร์ (fraction)
+          { name:'สติ๊กเกอร์อัญชัน', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
+          { name:'สติ๊กเกอร์เก๊กฮวย', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
+          { name:'สติ๊กเกอร์ชาไทย', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
 
-    /* ---------------- Navigation ---------------- */
-    function selectBranch(branch){
-      currentBranch = branch;
-      document.getElementById('selectedBranch').textContent = branch;
-      showScreen('modeScreen');
-    }
-    function selectMode(mode){
-      currentMode = mode;
-      document.getElementById('modeText').textContent = mode === 'open' ? '🔓 โหมดเปิดร้าน' : '🌙 โหมดปิดร้าน';
-      loadStockItems();
-      showScreen('stockScreen');
-    }
-    function showScreen(id){
-      ['branchScreen','modeScreen','stockScreen','summaryScreen'].forEach(s => {
-        document.getElementById(s).classList.add('hidden');
-      });
-      document.getElementById(id).classList.remove('hidden');
-    }
-    function goBack(id){ showScreen(id); }
+          // ติ๊กสั่งเพิ่มอย่างเดียว
+          { name:'ขวดน้ำ', unit:'', category:'packaging', icon:'📦', orderOnly:true },
+        ];
+      }
 
-    /* ---------------- Render items ---------------- */
-    function loadStockItems(){
-      const container = document.getElementById('stockItems');
-      container.innerHTML = '';
-      stockData = {};
-      orderRequests = {};
-      customOrders = [];
+      // กระดาษใบเสร็จแยกใหญ่/เล็กเฉพาะพระยาสัจจา
+      const packagingReceipts =
+        (branch === 'พระยาสัจจา')
+          ? [
+              { name:'กระดาษใบเสร็จ (ใหญ่)', unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
+              { name:'กระดาษใบเสร็จ (เล็ก)',  unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
+            ]
+          : [
+              { name:'กระดาษใบเสร็จ', unit:'ม้วน', category:'packaging', icon:'📦', orderOnly:true },
+            ];
 
-      if (currentMode === 'close') {
-        const items = closeModeItemsForBranch(currentBranch);
-        const categories = {
-          fresh:     { name:'หมวดวัตถุดิบสด', color:'green',  icon:'🥬', items:[] },
-          seasoning: { name:'หมวดเครื่องปรุง', color:'yellow', icon:'🧂', items:[] },
-          packaging: { name:'หมวดบรรจุภัณฑ์ + น้ำดื่ม/น้ำอัดลม', color:'blue', icon:'📦', items:[] },
-          cleaning:  { name:'หมวดอุปกรณ์ทำความสะอาด', color:'purple', icon:'🧹', items:[] },
-        };
-        items.forEach(it => categories[it.category].items.push(it));
+      // สาขาหน้าร้านทั่วไป
+      return [
+        // fresh
+        { name:'เส้นหมี่', unit:'ห่อ', category:'fresh', icon:'🥬', type:'fraction' },
+        { name:'อกไก่', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
+        { name:'หมูกระจก', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
+        { name:'ผักกาดหอม', unit:'กิโล', category:'fresh', icon:'🥬', type:'free' },
+        { name:'ใบพาสเล่ย์', unit:'ถุง', category:'fresh', icon:'🥬', type:'fraction' },
+        { name:'ลูกชิ้นปลา', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
+        { name:'ไข่กุ้ง', unit:'', category:'fresh', icon:'🥬', orderOnly:true },
 
-        Object.values(categories).forEach(cat => {
-          if (cat.items.length === 0) return;
-          const wrap = document.createElement('div');
-          wrap.className = 'mb-6';
-          wrap.innerHTML = `
-            <div class="flex items-center mb-4">
-              <span class="text-2xl mr-2">${cat.items[0].icon}</span>
-              <h3 class="text-lg font-semibold text-gray-800">${cat.name}</h3>
-            </div>
-          `;
-          cat.items.forEach(it => wrap.appendChild(createItemElement(it)));
-          container.appendChild(wrap);
-        });
+        // seasoning
+        { name:'น้ำมันกระเทียมเจียว', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
+        { name:'กระเทียมเจียว', unit:'กรัม', category:'seasoning', icon:'🧂', type:'free' },
+        { name:'ซอสดั้งเดิม', unit:'แกลลอน', category:'seasoning', icon:'🧂', type:'fraction' },
+        { name:'น้ำมะนาว', unit:'ขวด', category:'seasoning', icon:'🧂', orderOnly:true },
+        { name:'พริกป่น', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
+        { name:'น้ำตาล', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
+        { name:'น้ำปลา', unit:'ขวด', category:'seasoning', icon:'🧂', orderOnly:true },
+        { name:'รสดี', unit:'ถุง', category:'seasoning', icon:'🧂', orderOnly:true },
 
-        // สั่งอื่นๆเพิ่ม
-        const customDiv = document.createElement('div');
-        customDiv.className = 'mb-6';
-        customDiv.innerHTML = `
-          <div class="flex items-center mb-4">
-            <span class="text-2xl mr-2">📝</span>
-            <h3 class="text-lg font-semibold text-gray-800">สั่งอื่นๆเพิ่ม</h3>
-          </div>
-          <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div class="space-y-3">
-              <div class="flex items-center space-x-3">
-                <input type="text" id="customItemName" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
-                  placeholder="เช่น โพสอิท สก๊อตเทป อื่นๆ"
-                  onkeypress="if(event.key==='Enter') addCustomOrder()">
-                <button onclick="addCustomOrder()" class="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors">เพิ่ม</button>
-              </div>
-              <div id="customOrdersList" class="space-y-2"></div>
-            </div>
-          </div>
-        `;
-        container.appendChild(customDiv);
-      } else {
-        // โหมดเปิดร้าน (ไม่มีปุ่มสั่งเพิ่ม)
-        openModeItemsBase.forEach(it => container.appendChild(createItemElement({ ...it })));
-      }
+        // packaging + drinks
+        { name:'ถุงซีล 7×10', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'ถุงซีล 9×11.5', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'กล่อง 26 oz', unit:'แถว', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'กล่อง 32 oz', unit:'แถว', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'ถุงหิ้วพลาสติก 6×14', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'ถุงหิ้วพลาสติก 8×16', unit:'ห่อ', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'สติ๊กเกอร์ ดั้งเดิม', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'สติ๊กเกอร์ แซ่บ', unit:'แผ่น', category:'packaging', icon:'📦', type:'fraction' },
+        { name:'น้ำเปล่า',   unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำโค้ก',    unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำส้ม',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำแดง',     unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำสไปร์ท',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำเก๊กฮวย', unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'น้ำอัญชัน',  unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        { name:'ชาไทย',      unit:'ขวด', category:'packaging', icon:'📦', type:'free' },
+        ...packagingReceipts,
+        { name:'ตะเกียบ', unit:'', category:'packaging', icon:'📦', orderOnly:true },
 
-      updateProgress();
-    }
+        // cleaning
+        { name:'ถุงขยะ', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'ทิชชู่เปียก', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'ทิชชู่แห้ง', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'น้ำยาถูพื้น', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'น้ำยาซักผ้า', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'น้ำยาล้างจาน', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'ฟองน้ำล้างจาน', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'ถุงมือ', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+        { name:'หมวกคลุมผม', unit:'', category:'cleaning', icon:'🧹', orderOnly:true },
+      ];
+    }
 
-    function createItemElement(item){
-      const div = document.createElement('div');
-      div.className = 'bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100';
+    /* ---------------- Navigation ---------------- */
+    function selectBranch(branch){
+      currentBranch = branch;
+      document.getElementById('selectedBranch').textContent = branch;
+      showScreen('modeScreen');
+    }
 
-      // order-only (checkbox + ยืนยัน)
-      if (item.orderOnly) {
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex-1">
-              <h4 class="font-medium text-gray-800">${item.name}</h4>
-              <p class="text-sm text-gray-500">ติ๊กเพื่อสั่งเพิ่ม</p>
-            </div>
-            <label class="flex items-center">
-              <input type="checkbox" class="w-5 h-5 text-orange-500 rounded" onchange="toggleOrderRequest('${item.name}', this.checked, this)">
-              <span class="ml-2 text-sm text-gray-600">สั่งเพิ่ม</span>
-            </label>
-          </div>
-        `;
-        return div;
-      }
+    function selectMode(mode){
+      currentMode = mode;
+      let text = '';
+      if (mode === 'open') {
+        if (currentBranch === 'หนองตำลึง') {
+          text = 'เช็คเฉพาะสิ่งที่ทำแล้ว';
+        } else {
+          text = '🔓 โหมดเปิดร้าน';
+        }
+      } else {
+        text = '🌙 โหมดปิดร้าน';
+      }
+      document.getElementById('modeText').textContent = text;
+      loadStockItems();
+      showScreen('stockScreen');
+    }
 
-      // type: fraction → select 0–6 + เศษ
-      if (item.type === 'fraction') {
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex-1">
-              <h4 class="font-medium text-gray-800">${item.name}</h4>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="flex items-center space-x-2">
-                <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
-                  onchange="updateFractionStock('${item.name}', this)">
-                  ${Array.from({length: WHOLE_MAX+1}, (_,i)=>`<option value="${i}">${i}</option>`).join('')}
-                </select>
-                <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
-                  onchange="updateFractionStock('${item.name}', this)">
-                  ${FRACTIONS.map(fr => `<option value="${fr}">${fr || '-'}</option>`).join('')}
-                </select>
-                <span class="text-sm text-gray-600">${item.unit}</span>
-              </div>
-              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
-            </div>
-          </div>
-        `;
-        return div;
-      }
+    function showScreen(id){
+      ['branchScreen','modeScreen','stockScreen','summaryScreen'].forEach(s => {
+        document.getElementById(s).classList.add('hidden');
+      });
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function goBack(id){ showScreen(id); }
 
-      // type: number → input number (0–6)
-      if (item.type === 'number') {
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex-1">
-              <h4 class="font-medium text-gray-800">${item.name}</h4>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="flex items-center space-x-2">
-                <input type="number" min="0" max="${WHOLE_MAX}" step="1"
-                  class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
-                  placeholder="0" oninput="clampNumber(this)" onchange="updateStock('${item.name}', this.value)">
-                <span class="text-sm text-gray-600">${item.unit}</span>
-              </div>
-              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
-            </div>
-          </div>
-        `;
-        return div;
-      }
+    /* ---------------- Render items ---------------- */
+    function loadStockItems(){
+      const container = document.getElementById('stockItems');
+      container.innerHTML = '';
+      stockData = {};
+      orderRequests = {};
+      customOrders = [];
 
-      // type: free → กรอกเลขได้อิสระ (ทศนิยมได้) แต่ให้เป็น "เลขเท่านั้น"
-      if (item.type === 'free') {
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex-1">
-              <h4 class="font-medium text-gray-800">${item.name}</h4>
-            </div>
-            <div class="flex items-center space-x-3">
-              <div class="flex items-center space-x-2">
-                <input
-                  type="text"
-                  inputmode="decimal"
-                  placeholder="0"
-                  class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
-                  oninput="numericOnly(this, true); updateStock('${item.name}', this.value)"
-                  onchange="numericOnly(this, true); updateStock('${item.name}', this.value)"
-                >
-                <span class="text-sm text-gray-600">${item.unit}</span>
-              </div>
-              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
-            </div>
-          </div>
-        `;
-        return div;
-      }
+      if (currentMode === 'close') {
+        const items = closeModeItemsForBranch(currentBranch);
+        const categories = {
+          fresh:     { name:'หมวดวัตถุดิบสด', color:'green',  icon:'🥬', items:[] },
+          seasoning: { name:'หมวดเครื่องปรุง', color:'yellow', icon:'🧂', items:[] },
+          packaging: { name:'หมวดบรรจุภัณฑ์ + น้ำดื่ม/น้ำอัดลม', color:'blue', icon:'📦', items:[] },
+          cleaning:  { name:'หมวดอุปกรณ์ทำความสะอาด', color:'purple', icon:'🧹', items:[] },
+        };
+        items.forEach(it => categories[it.category].items.push(it));
 
-      return div;
-    }
+        Object.values(categories).forEach(cat => {
+          if (cat.items.length === 0) return;
+          const wrap = document.createElement('div');
+          wrap.className = 'mb-6';
+          wrap.innerHTML = `
+            <div class="flex items-center mb-4">
+              <span class="text-2xl mr-2">${cat.items[0].icon}</span>
+              <h3 class="text-lg font-semibold text-gray-800">${cat.name}</h3>
+            </div>
+          `;
+          cat.items.forEach(it => wrap.appendChild(createItemElement(it)));
+          container.appendChild(wrap);
+        });
 
-    function clampNumber(inp){
-      const v = parseInt(inp.value || '0', 10);
-      if (isNaN(v) || v < 0) inp.value = 0;
-      else if (v > WHOLE_MAX) inp.value = WHOLE_MAX;
-    }
+        // สั่งอื่นๆเพิ่ม (เฉพาะโหมดปิดร้านทุกสาขา)
+        const customDiv = document.createElement('div');
+        customDiv.className = 'mb-6';
+        customDiv.innerHTML = `
+          <div class="flex items-center mb-4">
+            <span class="text-2xl mr-2">📝</span>
+            <h3 class="text-lg font-semibold text-gray-800">สั่งอื่นๆเพิ่ม</h3>
+          </div>
+          <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+            <div class="space-y-3">
+              <div class="flex items-center space-x-3">
+                <input type="text" id="customItemName" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg"
+                  placeholder="เช่น โพสอิท สก๊อตเทป อื่นๆ"
+                  onkeypress="if(event.key==='Enter') addCustomOrder()">
+                <button onclick="addCustomOrder()" class="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors">เพิ่ม</button>
+              </div>
+              <div id="customOrdersList" class="space-y-2"></div>
+            </div>
+          </div>
+        `;
+        container.appendChild(customDiv);
+      } else {
+        const items = openModeItemsForBranch(currentBranch);
+        items.forEach(it => container.appendChild(createItemElement({ ...it })));
+      }
 
-    // fraction updater: ใช้ selects ภายในบล็อกเดียวกัน
-    function updateFractionStock(itemName, el){
-      const parent = el.parentNode;
-      const selects = parent.querySelectorAll('select');
-      if (selects.length === 2){
-        const whole = selects[0].value;
-        const frac  = selects[1].value;
-        let val = whole;
-        if (frac && whole !== '0') val = `${whole} ${frac}`;
-        else if (frac && whole === '0') val = frac;
-        stockData[itemName] = val || '';
-        updateProgress();
-      }
-    }
+      updateProgress();
+    }
 
-    function updateStock(name, value){
-      stockData[name] = value || '';
-      updateProgress();
-    }
+    function createItemElement(item){
+      const div = document.createElement('div');
+      div.className = 'bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100';
 
-    /* ---------------- Order controls ---------------- */
-    function toggleOrderRequest(itemName, checked, checkbox){
-      if (checked) {
-        currentConfirmItem = itemName;
-        const nameEl  = document.getElementById('confirmItemName');
-        const titleEl = document.getElementById('confirmModalTitle');
-        titleEl.textContent = 'ต้องการสั่งรายการนี้เพิ่มใช่ไหม?';
-        nameEl.textContent = itemName;
-        nameEl.className = 'text-2xl font-extrabold tracking-wide mb-6 text-orange-600';
-        window.currentAction = 'add';
-        window.currentCheckbox = checkbox;
-        document.getElementById('confirmModal').classList.remove('hidden');
-      } else {
-        delete orderRequests[itemName];
-        updateProgress();
-      }
-    }
+      if (item.orderOnly) {
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-800">${item.name}</h4>
+              <p class="text-sm text-gray-500">ติ๊กเพื่อสั่งเพิ่ม</p>
+            </div>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-5 h-5 text-orange-500 rounded" onchange="toggleOrderRequest('${item.name}', this.checked, this)">
+              <span class="ml-2 text-sm text-gray-600">สั่งเพิ่ม</span>
+            </label>
+          </div>
+        `;
+        return div;
+      }
 
-    function requestOrder(itemName){
-      currentConfirmItem = itemName;
-      const isOrdered = !!orderRequests[itemName];
-      const nameEl  = document.getElementById('confirmItemName');
-      const titleEl = document.getElementById('confirmModalTitle');
+      if (item.type === 'fraction') {
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-800">${item.name}</h4>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-2">
+                <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                  onchange="updateFractionStock('${item.name}', this)">
+                  ${Array.from({length: WHOLE_MAX+1}, (_,i)=>`<option value="${i}">${i}</option>`).join('')}
+                </select>
+                <select class="w-16 px-2 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                  onchange="updateFractionStock('${item.name}', this)">
+                  ${FRACTIONS.map(fr => `<option value="${fr}">${fr || '-'}</option>`).join('')}
+                </select>
+                <span class="text-sm text-gray-600">${item.unit}</span>
+              </div>
+              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
+            </div>
+          </div>
+        `;
+        return div;
+      }
 
-      titleEl.textContent = isOrdered ? 'ยกเลิกการสั่งรายการนี้ใช่ไหม?' : 'ต้องการสั่งรายการนี้เพิ่มใช่ไหม?';
-      nameEl.textContent = itemName;
-      nameEl.className = 'text-2xl font-extrabold tracking-wide mb-6 ' + (isOrdered ? 'text-red-600' : 'text-orange-600');
-      window.currentAction = isOrdered ? 'remove' : 'add';
+      if (item.type === 'number') {
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-800">${item.name}</h4>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-2">
+                <input type="number" min="0" max="${WHOLE_MAX}" step="1"
+                  class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                  placeholder="0" oninput="clampNumber(this)" onchange="updateStock('${item.name}', this.value)">
+                <span class="text-sm text-gray-600">${item.unit}</span>
+              </div>
+              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
+            </div>
+          </div>
+        `;
+        return div;
+      }
 
-      document.getElementById('confirmModal').classList.remove('hidden');
-    }
+      if (item.type === 'free') {
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-800">${item.name}</h4>
+            </div>
+            <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-2">
+                <input
+                  type="text"
+                  inputmode="decimal"
+                  placeholder="0"
+                  class="w-28 px-3 py-2 border border-gray-300 rounded-lg text-center font-medium"
+                  oninput="numericOnly(this, true); updateStock('${item.name}', this.value)"
+                  onchange="numericOnly(this, true); updateStock('${item.name}', this.value)"
+                >
+                <span class="text-sm text-gray-600">${item.unit}</span>
+              </div>
+              ${currentMode === 'close' ? getOrderBtnHTML(item.name) : ''}
+            </div>
+          </div>
+        `;
+        return div;
+      }
 
-function confirmOrder(){
-      // เก็บชื่อรายการไว้ก่อน เพราะ closeModal() จะเคลียร์ค่า
-      const item = currentConfirmItem;
+      return div;
+    }
 
-      if (window.currentAction === 'remove') {
-        delete orderRequests[item];
-      } else {
-        orderRequests[item] = true;
-      }
+    function clampNumber(inp){
+      const v = parseInt(inp.value || '0', 10);
+      if (isNaN(v) || v < 0) inp.value = 0;
+      else if (v > WHOLE_MAX) inp.value = WHOLE_MAX;
+    }
 
-      // อัปเดตปุ่มให้เป็นเขียว/ส้ม ก่อนปิดโมดัล
-      refreshOrderButtonState(item);
-      updateProgress();
+    function updateFractionStock(itemName, el){
+      const parent = el.parentNode;
+      const selects = parent.querySelectorAll('select');
+      if (selects.length === 2){
+        const whole = selects[0].value;
+        const frac  = selects[1].value;
+        let val = whole;
+        if (frac && whole !== '0') val = `${whole} ${frac}`;
+        else if (frac && whole === '0') val = frac;
+        stockData[itemName] = val || '';
+        updateProgress();
+      }
+    }
 
-      // ค่อยปิดโมดัลทีหลัง
-      closeModal();
-    }
+    function updateStock(name, value){
+      stockData[name] = value || '';
+      updateProgress();
+    }
 
-    function closeModal(){
-      const item = currentConfirmItem; // เก็บชื่อไว้ก่อน
+    /* ---------------- Order controls ---------------- */
+    function toggleOrderRequest(itemName, checked, checkbox){
+      if (checked) {
+        currentConfirmItem = itemName;
+        const nameEl  = document.getElementById('confirmItemName');
+        const titleEl = document.getElementById('confirmModalTitle');
+        titleEl.textContent = 'ต้องการสั่งรายการนี้เพิ่มใช่ไหม?';
+        nameEl.textContent = itemName;
+        nameEl.className = 'text-2xl font-extrabold tracking-wide mb-6 text-orange-600';
+        window.currentAction = 'add';
+        window.currentCheckbox = checkbox;
+        document.getElementById('confirmModal').classList.remove('hidden');
+      } else {
+        delete orderRequests[itemName];
+        updateProgress();
+      }
+    }
 
-      document.getElementById('confirmModal').classList.add('hidden');
+    function requestOrder(itemName){
+      currentConfirmItem = itemName;
+      const isOrdered = !!orderRequests[itemName];
+      const nameEl  = document.getElementById('confirmItemName');
+      const titleEl = document.getElementById('confirmModalTitle');
 
-      // ถ้าเป็นกรณีติ๊ก checkbox แล้วกดยกเลิก ให้ติ๊กกลับ
-      if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[item]) {
-        window.currentCheckbox.checked = false;
-      }
+      titleEl.textContent = isOrdered ? 'ยกเลิกการสั่งรายการนี้ใช่ไหม?' : 'ต้องการสั่งรายการนี้เพิ่มใช่ไหม?';
+      nameEl.textContent = itemName;
+      nameEl.className = 'text-2xl font-extrabold tracking-wide mb-6 ' + (isOrdered ? 'text-red-600' : 'text-orange-600');
+      window.currentAction = isOrdered ? 'remove' : 'add';
 
-      // เคลียร์สถานะ
-      window.currentCheckbox = null;
-      currentConfirmItem = '';
-      window.currentAction = null;
-    }
+      document.getElementById('confirmModal').classList.remove('hidden');
+    }
 
-    /* ---------------- Progress ---------------- */
-    function updateProgress(){
-      const items = currentMode === 'open' ? openModeItemsBase : closeModeItemsForBranch(currentBranch);
-      let completed = 0;
-      items.forEach(it => {
-        if (it.orderOnly) {
-          completed++; // นับเป็นเช็คเสมอ (ไม่ต้องกรอกจำนวน)
-        } else {
-          if (stockData[it.name] && stockData[it.name] !== '') completed++;
-        }
-      });
-      const pct = Math.round((completed / items.length) * 100);
-      document.getElementById('progressText').textContent = pct + '%';
-      document.getElementById('progressBar').style.width = pct + '%';
-    }
+    function confirmOrder(){
+      const item = currentConfirmItem;
 
-    /* ---------------- Save / Summary / Telegram ---------------- */
-    function saveStock(){
-      if (currentMode === 'open') {
-        confirmSaveStock(); // เปิดร้านไม่ต้องสรุป
-      } else {
-        showOrderSummary();
-        showScreen('summaryScreen');
-      }
-    }
+      if (window.currentAction === 'remove') {
+        delete orderRequests[item];
+      } else {
+        orderRequests[item] = true;
+      }
 
-    function showOrderSummary(){
-      const wrap = document.getElementById('orderSummaryList');
-      wrap.innerHTML = '';
-      const list = Object.keys(orderRequests).filter(n => orderRequests[n]);
-      if (customOrders.length) list.push(...customOrders.map(o=>o.name));
+      refreshOrderButtonState(item);
+      updateProgress();
+      closeModal();
+    }
 
-      if (list.length === 0) {
-        wrap.innerHTML = `
-          <div class="text-center py-8 text-gray-500">
-            <div class="text-4xl mb-2">📝</div>
-            <p>ไม่มีรายการสั่งเพิ่ม</p>
-          </div>`;
-        return;
-      }
+    function closeModal(){
+      const item = currentConfirmItem;
 
-      list.forEach((name, i) => {
-        const row = document.createElement('div');
-        row.className = 'flex items-center justify-between p-3 border-b border-gray-100 last:border-b-0';
-        row.innerHTML = `
-          <div class="flex items-center">
-            <span class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-sm font-medium mr-3">${i+1}</span>
-            <span class="font-medium text-gray-800">${name}</span>
-          </div>
-          <span class="text-green-600 font-medium">✓ สั่งเพิ่ม</span>
-        `;
-        wrap.appendChild(row);
-      });
-    }
+      document.getElementById('confirmModal').classList.add('hidden');
 
-    function confirmSaveStock(){
-      const now = new Date();
-      const report = {
-        branch: currentBranch,
-        mode: currentMode, // 'open' | 'close'
-        date: now.toLocaleDateString('th-TH'),
-        time: now.toLocaleTimeString('th-TH'),
-        progress: parseInt(document.getElementById('progressText').textContent) || 0,
-        stocks: buildStocksPayload(),     // [{name,value,unit}]
-        orders: buildOrdersPayload(),     // [string]
-      };
+      if (window.currentCheckbox && window.currentAction === 'add' && !orderRequests[item]) {
+        window.currentCheckbox.checked = false;
+      }
 
-      // ส่งไป Netlify Function → Telegram (ถ้าตั้งค่าไว้)
-      fetch('/api/telegram', {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify(report)
-      }).catch(()=>{ /* เงียบๆ ถ้าออฟไลน์ */ });
+      window.currentCheckbox = null;
+      currentConfirmItem = '';
+      window.currentAction = null;
+    }
 
-      document.getElementById('successModal').classList.remove('hidden');
-    }
+    /* ---------------- Progress ---------------- */
+    function updateProgress(){
+      const items = currentMode === 'open'
+        ? openModeItemsForBranch(currentBranch)
+        : closeModeItemsForBranch(currentBranch);
 
-    function buildStocksPayload(){
-      // ไม่รวมรายการที่เป็น orderOnly
-      const allItems = currentMode === 'open' ? openModeItemsBase : closeModeItemsForBranch(currentBranch);
-      const names = new Set(allItems.filter(i => !i.orderOnly).map(i => i.name));
-      return Object.entries(stockData)
-        .filter(([name,val]) => names.has(name) && val && String(val).trim() !== '')
-        .map(([name,val]) => {
-          const unit = (allItems.find(i => i.name === name) || {}).unit || '';
-          return { name, value: val, unit };
-        });
-    }
+      let completed = 0;
+      items.forEach(it => {
+        if (it.orderOnly) {
+          completed++;
+        } else {
+          if (stockData[it.name] && stockData[it.name] !== '') completed++;
+        }
+      });
+      const pct = Math.round((completed / items.length) * 100);
+      document.getElementById('progressText').textContent = pct + '%';
+      document.getElementById('progressBar').style.width = pct + '%';
+    }
 
-    function buildOrdersPayload(){
-      const listed = Object.keys(orderRequests).filter(n => orderRequests[n]);
-      if (customOrders.length) listed.push(...customOrders.map(o=>o.name));
-      return listed;
-    }
+    /* ---------------- Save / Summary / Telegram ---------------- */
+    function saveStock(){
+      if (currentMode === 'open') {
+        confirmSaveStock();
+      } else {
+        showOrderSummary();
+        showScreen('summaryScreen');
+      }
+    }
 
-    /* ---------------- Custom orders ---------------- */
-    function addCustomOrder(){
-      const inp = document.getElementById('customItemName');
-      const name = (inp.value || '').trim();
-      if (!name) { alert('กรุณากรอกชื่อรายการ'); return; }
-      if (customOrders.some(o => o.name === name)) { alert('รายการนี้มีอยู่แล้ว'); return; }
-      const item = { id: Date.now(), name };
-      customOrders.push(item);
-      orderRequests[name] = true;
-      inp.value = '';
-      updateCustomOrdersList();
-      updateProgress();
-    }
-    function removeCustomOrder(id){
-      const idx = customOrders.findIndex(o => o.id === id);
-      if (idx !== -1){
-        const name = customOrders[idx].name;
-        delete orderRequests[name];
-        customOrders.splice(idx, 1);
-        updateCustomOrdersList();
-        updateProgress();
-      }
-    }
-    function updateCustomOrdersList(){
-      const wrap = document.getElementById('customOrdersList');
-      if (!wrap) return;
-      wrap.innerHTML = '';
-      customOrders.forEach(o => {
-        const row = document.createElement('div');
-        row.className = 'flex items-center justify-between bg-green-50 p-3 rounded-lg border border-green-200';
-        row.innerHTML = `
-          <div class="flex-1"><span class="font-medium text-green-800">${o.name}</span></div>
-          <button onclick="removeCustomOrder(${o.id})" class="text-red-500 hover:text-red-700 text-sm font-medium">ลบ</button>`;
-        wrap.appendChild(row);
-      });
-    }
+    function showOrderSummary(){
+      const wrap = document.getElementById('orderSummaryList');
+      wrap.innerHTML = '';
+      const list = Object.keys(orderRequests).filter(n => orderRequests[n]);
+      if (customOrders.length) list.push(...customOrders.map(o=>o.name));
 
-    /* ---------------- Reset ---------------- */
-    function resetApp(){
-      currentBranch=''; currentMode='';
-      stockData={}; orderRequests={}; customOrders=[];
-      document.getElementById('successModal').classList.add('hidden');
-      showScreen('branchScreen');
-    }
+      if (list.length === 0) {
+        wrap.innerHTML = `
+          <div class="text-center py-8 text-gray-500">
+            <div class="text-4xl mb-2">📝</div>
+            <p>ไม่มีรายการสั่งเพิ่ม</p>
+          </div>`;
+        return;
+      }
 
-    // init
-    showScreen('branchScreen');
-  </script>
+      list.forEach((name, i) => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between p-3 border-b border-gray-100 last:border-b-0';
+        row.innerHTML = `
+          <div class="flex items-center">
+            <span class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center text-sm font-medium mr-3">${i+1}</span>
+            <span class="font-medium text-gray-800">${name}</span>
+          </div>
+          <span class="text-green-600 font-medium">✓ สั่งเพิ่ม</span>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    function confirmSaveStock(){
+      const now = new Date();
+      const report = {
+        branch: currentBranch,
+        mode: currentMode,
+        date: now.toLocaleDateString('th-TH'),
+        time: now.toLocaleTimeString('th-TH'),
+        progress: parseInt(document.getElementById('progressText').textContent) || 0,
+        stocks: buildStocksPayload(),
+        orders: buildOrdersPayload(),
+      };
+
+      fetch('/api/telegram', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify(report)
+      }).catch(()=>{});
+
+      document.getElementById('successModal').classList.remove('hidden');
+    }
+
+    function buildStocksPayload(){
+      const allItems = currentMode === 'open'
+        ? openModeItemsForBranch(currentBranch)
+        : closeModeItemsForBranch(currentBranch);
+
+      const names = new Set(allItems.filter(i => !i.orderOnly).map(i => i.name));
+      return Object.entries(stockData)
+        .filter(([name,val]) => names.has(name) && val && String(val).trim() !== '')
+        .map(([name,val]) => {
+          const unit = (allItems.find(i => i.name === name) || {}).unit || '';
+          return { name, value: val, unit };
+        });
+    }
+
+    function buildOrdersPayload(){
+      const listed = Object.keys(orderRequests).filter(n => orderRequests[n]);
+      if (customOrders.length) listed.push(...customOrders.map(o=>o.name));
+      return listed;
+    }
+
+    /* ---------------- Custom orders ---------------- */
+    function addCustomOrder(){
+      const inp = document.getElementById('customItemName');
+      const name = (inp.value || '').trim();
+      if (!name) { alert('กรุณากรอกชื่อรายการ'); return; }
+      if (customOrders.some(o => o.name === name)) { alert('รายการนี้มีอยู่แล้ว'); return; }
+      const item = { id: Date.now(), name };
+      customOrders.push(item);
+      orderRequests[name] = true;
+      inp.value = '';
+      updateCustomOrdersList();
+      updateProgress();
+    }
+    function removeCustomOrder(id){
+      const idx = customOrders.findIndex(o => o.id === id);
+      if (idx !== -1){
+        const name = customOrders[idx].name;
+        delete orderRequests[name];
+        customOrders.splice(idx, 1);
+        updateCustomOrdersList();
+        updateProgress();
+      }
+    }
+    function updateCustomOrdersList(){
+      const wrap = document.getElementById('customOrdersList');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      customOrders.forEach(o => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between bg-green-50 p-3 rounded-lg border border-green-200';
+        row.innerHTML = `
+          <div class="flex-1"><span class="font-medium text-green-800">${o.name}</span></div>
+          <button onclick="removeCustomOrder(${o.id})" class="text-red-500 hover:text-red-700 text-sm font-medium">ลบ</button>`;
+        wrap.appendChild(row);
+      });
+    }
+
+    /* ---------------- Reset ---------------- */
+    function resetApp(){
+      currentBranch=''; currentMode='';
+      stockData={}; orderRequests={}; customOrders=[];
+      document.getElementById('successModal').classList.add('hidden');
+      showScreen('branchScreen');
+    }
+
+    showScreen('branchScreen');
+  </script>
 </body>
 </html>
